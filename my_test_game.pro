@@ -14,10 +14,12 @@ TEMPLATE = app
 
 SOURCES += main.cpp\
         mainmenu.cpp \
-    optionbutton.cpp
+    optionbutton.cpp \
+    gamescene.cpp
 
 HEADERS  += mainmenu.h \
-    optionbutton.h
+    optionbutton.h \
+    gamescene.h
 
 FORMS    += mainmenu.ui
 
