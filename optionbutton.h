@@ -19,7 +19,7 @@ public:
     void click_animation1();
     void click_animation2();
     void click_operation();
-
+    
     QString option;
 
 };

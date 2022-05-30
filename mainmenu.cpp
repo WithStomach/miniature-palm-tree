@@ -5,9 +5,7 @@
 #include <QPainter>
 #include "optionbutton.h"
 
-static const QString iconPath = ""; //窗口图标路径
-static const QString bkgPath = ":/cheese.jpg"; //背景图片路径
-static const int mainWidth = 1600, mainHeight = 960; //主窗口尺寸
+
 
 // 所有按键位置、大小均有待修改
 MainMenu::MainMenu(QWidget *parent) :
@@ -18,14 +16,13 @@ MainMenu::MainMenu(QWidget *parent) :
     ui->setupUi(this);
     setFixedSize(mainWidth, mainHeight);
     setWindowTitle("燕雀之魂");
-    //QPixmap icon(iconPath);
-    //setWindowIcon(icon);
+    QPixmap icon(iconPath);
+    setWindowIcon(icon);
 
     // 开始游戏按键
-    OptionButton* startButton = new OptionButton(300, 100, "whiteCatBird");
+    OptionButton* startButton = new OptionButton(300, 100, "start");
     startButton->setParent(this);
     startButton->move(750, 800);
-    this->gameWidget = new GameScene();
     connect(startButton, &QPushButton::clicked, this, &game_start);
 
     //退出游戏按键
@@ -55,9 +52,12 @@ void MainMenu::paintEvent(QPaintEvent *)
     painter.drawPixmap(0, 0, this->width(), this->height(), img);
 }
 
+//开始游戏后，主界面关闭，进入游戏界面
 void MainMenu::game_start()
 {
     this->hide();
-    this->gameWidget->show();
+    this->gameWidget = new GameScene();
+    gameWidget->game_start();
+    
 }
 

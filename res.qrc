@@ -1,6 +1,7 @@
 <RCC>
     <qresource prefix="/">
-        <file>cheese.jpg</file>
-        <file>whiteCatBird.jpg</file>
+        <file>pic/map.jpg</file>
+        <file>pic/normalZombie.jpg</file>
+        <file>pic/start.jpg</file>
     </qresource>
 </RCC>

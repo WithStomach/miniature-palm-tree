@@ -13,6 +13,11 @@
 #define MAINMENU_H
 #include <QWidget>
 #include "gamescene.h"
+
+static const QString iconPath = ""; //窗口图标路径
+static const QString bkgPath = ":/pic/background.jpg"; //背景图片路径
+static const int mainWidth = 1600, mainHeight = 960; //主窗口尺寸
+
 namespace Ui {
 class MainMenu;
 }
@@ -25,10 +30,11 @@ public:
     explicit MainMenu(QWidget *parent = 0);
     ~MainMenu();
     void paintEvent(QPaintEvent* );
-    void game_start();
+    void game_start();//游戏开始
 private:
     Ui::MainMenu *ui;
     GameScene* gameWidget;
+
 };
 
 #endif // MAINMENU_H

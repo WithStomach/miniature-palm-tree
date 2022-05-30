@@ -15,13 +15,18 @@ TEMPLATE = app
 SOURCES += main.cpp\
         mainmenu.cpp \
     optionbutton.cpp \
-    gamescene.cpp
+    gamescene.cpp \
+    zombie.cpp
 
 HEADERS  += mainmenu.h \
     optionbutton.h \
-    gamescene.h
+    gamescene.h \
+    zombie.h
 
 FORMS    += mainmenu.ui
 
 RESOURCES += \
     res.qrc
+
+
+
