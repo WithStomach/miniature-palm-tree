@@ -3,6 +3,9 @@
 
 #include <QGraphicsItem>
 
+static bool e = true;
+static QMap<QString, int> zombieHPInfo, zombieATKInfo, zombieSpeedInfo;
+
 class zombie : public QGraphicsItem{
 public:
     zombie(QString _name);

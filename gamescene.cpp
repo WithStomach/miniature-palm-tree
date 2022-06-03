@@ -5,12 +5,13 @@
 #include <QGraphicsPixmapItem>
 #include "zombie.h"
 #include <math.h>
+#include "optionbutton.h"
 
 GameScene::GameScene(QWidget *parent) : QWidget(parent)
 {
 
     this->setFixedSize(mainWidth, mainHeight);
-
+    OptionButton* exitButton = new OptionButton(300, 50, "exit");
     mainGame = new QGraphicsScene;
     mainGame->setItemIndexMethod(QGraphicsScene::NoIndex);
     mainGame->setSceneRect(-0.5 * mainWidth, -0.5 * mainHeight,
@@ -30,6 +31,9 @@ GameScene::GameScene(QWidget *parent) : QWidget(parent)
     gameMap->setSceneRect(-0.5 * mainWidth, -0.5 * mainHeight,
                           mainWidth, mainHeight);
     gameMap->setFixedSize(mainWidth + 5, mainHeight + 5);
+    exitButton->setParent(gameMap);
+    exitButton->move(0, 0);
+    connect(exitButton, QPushButton::clicked, gameMap, &exit);
     //gameMap->setParent(this);
     // 商店
 

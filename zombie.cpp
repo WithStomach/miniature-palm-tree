@@ -1,9 +1,21 @@
 #include "zombie.h"
 #include <QPainter>
 #include <QDebug>
+#include <QMap>
+#include <QString>
+
 
 zombie::zombie(QString _name):name(_name){
-
+    if(e){
+        // 定义各种僵尸的基本数值
+        zombieHPInfo[QString("normal")] = 100;
+        zombieATKInfo[QString("normal")] = 10;
+        zombieSpeedInfo[QString("normal")] = 2;
+        e = false;
+    }
+    HP = zombieHPInfo[name];
+    ATK = zombieATKInfo[name];
+    speed = zombieSpeedInfo[name];
 }
 
 QRectF zombie::boundingRect() const
@@ -27,5 +39,5 @@ void zombie::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget 
 void zombie::advance(int step = 1){
     if(!step)
         return;
-    setPos(mapToParent(-2, 0));
+    setPos(mapToParent(-speed, 0));
 }

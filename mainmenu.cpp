@@ -20,18 +20,22 @@ MainMenu::MainMenu(QWidget *parent) :
     setWindowIcon(icon);
 
     // 开始游戏按键
-    OptionButton* startButton = new OptionButton(300, 100, "start");
+    int width = 600, height = 200;
+    OptionButton* startButton = new OptionButton(width, height, "start");
     startButton->setParent(this);
-    startButton->move(750, 800);
+    startButton->move(mainWidth  / 2 - width / 2, mainHeight / 2 + height / 2);
     connect(startButton, &QPushButton::clicked, this, &game_start);
 
     //退出游戏按键
-    OptionButton* exitButton = new OptionButton(300, 50, "exit");
+    width = 300, height = 50;
+    OptionButton* exitButton = new OptionButton(width, height, "exit");
     exitButton->setParent(this);
-    exitButton->move(750, 800);
+    exitButton->move(0, mainHeight - 2 * height);
+    connect(exitButton, &QPushButton::clicked, this, &exit);
 
     //进入存档界面按键
-    OptionButton* saveloadButton = new OptionButton(300, 50, "saveload");
+    width = 300, height = 50;
+    OptionButton* saveloadButton = new OptionButton(300, 50, "save");
     saveloadButton->setParent(this);
     saveloadButton->move(70, 90);
 
