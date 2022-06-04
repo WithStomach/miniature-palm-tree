@@ -3,12 +3,12 @@
 
 #include <QGraphicsItem>
 
-static bool e = true;
-static QMap<QString, int> zombieHPInfo, zombieATKInfo, zombieSpeedInfo;
+static const int zombieWidth = 50, zombieHeight = 150;
 
-class zombie : public QGraphicsItem{
+class Zombie : public QGraphicsItem{
 public:
-    zombie(QString _name);
+    Zombie(QString _name);
+    ~Zombie();
     QRectF boundingRect() const Q_DECL_OVERRIDE;
     QPainterPath shape() const Q_DECL_OVERRIDE;
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
@@ -16,6 +16,8 @@ public:
     void advance(int step) Q_DECL_OVERRIDE;
 
     QString name;
+    static int zombieNum;
+    static QMap<QString, int> HPInfo, ATKInfo, SpeedInfo;
     int HP;
     int ATK;
     int speed;

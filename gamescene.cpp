@@ -42,13 +42,12 @@ GameScene::GameScene(QWidget *parent) : QWidget(parent)
 void GameScene::game_start()
 {
     gameMap->show();
-    //阳光生成
-    
-    //
+
     QTimer* zombieBirthTimer = new QTimer;
     QObject::connect(zombieBirthTimer, &QTimer::timeout,
                      this, &zombie_construct);
-    zombieBirthTimer->start(10000);
+    zombieBirthTimer->start(5000);
+
     QTimer* t1 = new QTimer();
     QObject::connect(t1, SIGNAL(timeout()), mainGame, SLOT(advance()));
     t1->start(100);
@@ -56,7 +55,10 @@ void GameScene::game_start()
 
 void GameScene::zombie_construct()
 {
-    zombie* newZombie = new zombie(QString("normal"));
-    mainGame->addItem(newZombie);
-    newZombie->setPos(700, (qrand() % 5) * 50);
+    if(Zombie::zombieNum <= 4){
+        Zombie* newZombie = new Zombie(QString("normal"));
+        mainGame->addItem(newZombie);
+        newZombie->setPos(700, (qrand() % 5) * (mainHeight / 5) - mainHeight * 0.5);
+    }
+
 }
