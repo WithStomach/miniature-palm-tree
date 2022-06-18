@@ -5,7 +5,8 @@
 
 static const int zombieWidth = 50, zombieHeight = 150;
 
-class Zombie : public QGraphicsItem{
+class Zombie :public QObject, public QGraphicsItem{
+    Q_OBJECT
 public:
     Zombie(QString _name);
     ~Zombie();
@@ -14,6 +15,7 @@ public:
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
                QWidget *widget) Q_DECL_OVERRIDE;
     void advance(int step) Q_DECL_OVERRIDE;
+    void dead();
 
     QString name;
     static int zombieNum;
@@ -21,7 +23,10 @@ public:
     int HP;
     int ATK;
     int speed;
-    
+
+
+signals:
+    void test_signal();
 };
 
 #endif // ZOMBIE_H

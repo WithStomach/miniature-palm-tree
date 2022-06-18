@@ -43,10 +43,11 @@ void GameScene::game_start()
 {
     gameMap->show();
 
-    QTimer* zombieBirthTimer = new QTimer;
+    /*QTimer* zombieBirthTimer = new QTimer;
     QObject::connect(zombieBirthTimer, &QTimer::timeout,
                      this, &zombie_construct);
-    zombieBirthTimer->start(5000);
+    zombieBirthTimer->start(5000);*/
+    zombie_construct();
 
     QTimer* t1 = new QTimer();
     QObject::connect(t1, SIGNAL(timeout()), mainGame, SLOT(advance()));
@@ -59,6 +60,7 @@ void GameScene::zombie_construct()
         Zombie* newZombie = new Zombie(QString("normal"));
         mainGame->addItem(newZombie);
         newZombie->setPos(700, (qrand() % 5) * (mainHeight / 5) - mainHeight * 0.5);
+        connect(newZombie, &Zombie::test_signal, this, &zombie_construct);
     }
 
 }

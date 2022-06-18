@@ -23,8 +23,9 @@ class GameScene : public QWidget
 public:
     GameScene(QWidget *parent = 0);
     void game_start();
+public slots:
     void zombie_construct();
-
+public:
     QGraphicsScene* mainGame;
     QGraphicsView* gameMap;
 };
