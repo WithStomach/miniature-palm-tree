@@ -11,7 +11,6 @@ public:
     Zombie(QString _name);
     ~Zombie();
     QRectF boundingRect() const Q_DECL_OVERRIDE;
-    QPainterPath shape() const Q_DECL_OVERRIDE;
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
                QWidget *widget) Q_DECL_OVERRIDE;
     void advance(int step) Q_DECL_OVERRIDE;
@@ -26,7 +25,7 @@ public:
 
 
 signals:
-    void test_signal();
+    void death();
 };
 
 #endif // ZOMBIE_H

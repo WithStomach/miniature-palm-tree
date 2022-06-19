@@ -5,7 +5,9 @@
 #include <QGraphicsPixmapItem>
 #include "zombie.h"
 #include <math.h>
+#include <typeinfo>
 #include "optionbutton.h"
+#include <QDebug>
 
 GameScene::GameScene(QWidget *parent) : QWidget(parent)
 {
@@ -47,6 +49,11 @@ void GameScene::game_start()
     QObject::connect(zombieBirthTimer, &QTimer::timeout,
                      this, &zombie_construct);
     zombieBirthTimer->start(5000);*/
+
+    Zombie* newZombie = new Zombie(QString("shit"));
+    mainGame->addItem(newZombie);
+    newZombie->setPos(400, 200);
+
     zombie_construct();
 
     QTimer* t1 = new QTimer();
@@ -59,8 +66,9 @@ void GameScene::zombie_construct()
     if(Zombie::zombieNum <= 4){
         Zombie* newZombie = new Zombie(QString("normal"));
         mainGame->addItem(newZombie);
-        newZombie->setPos(700, (qrand() % 5) * (mainHeight / 5) - mainHeight * 0.5);
-        connect(newZombie, &Zombie::test_signal, this, &zombie_construct);
+        //newZombie->setPos(700, (qrand() % 5) * (mainHeight / 5) - mainHeight * 0.5);
+        newZombie->setPos(700, 200);
+        connect(newZombie, &Zombie::death, this, &zombie_construct);
     }
 
 }
