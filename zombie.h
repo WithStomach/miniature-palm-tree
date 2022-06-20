@@ -3,8 +3,6 @@
 
 #include <QGraphicsItem>
 
-static const int zombieWidth = 50, zombieHeight = 150;
-
 class Zombie :public QObject, public QGraphicsItem{
     Q_OBJECT
 public:

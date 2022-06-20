@@ -52,7 +52,7 @@ void GameScene::game_start()
 
     Zombie* newZombie = new Zombie(QString("shit"));
     mainGame->addItem(newZombie);
-    newZombie->setPos(400, 200);
+    newZombie->setPos(0, 200);
 
     zombie_construct();
 
@@ -67,7 +67,7 @@ void GameScene::zombie_construct()
         Zombie* newZombie = new Zombie(QString("normal"));
         mainGame->addItem(newZombie);
         //newZombie->setPos(700, (qrand() % 5) * (mainHeight / 5) - mainHeight * 0.5);
-        newZombie->setPos(700, 200);
+        newZombie->setPos(500, 150);
         connect(newZombie, &Zombie::death, this, &zombie_construct);
     }
 

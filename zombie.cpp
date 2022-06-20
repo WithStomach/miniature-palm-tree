@@ -40,12 +40,11 @@ Zombie::~Zombie()
 
 QRectF Zombie::boundingRect() const
 {
-    return QRectF(0, 0, 70, 200);
+    return QRectF(0, 0, 85, 120);
 }
 
 void Zombie::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *){
     QImage ii(":/pic/" + name + "Zombie.png");
-    ii = ii.scaled(70, 200);
     painter->drawImage(0, 0, ii);
 }
 

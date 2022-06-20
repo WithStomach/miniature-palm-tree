@@ -15,7 +15,7 @@
 #include <QGraphicsView>
 #include <QString>
 
-static QString const mapPath = ":/pic/map.jpg";
+static QString const mapPath = ":/pic/background.jpg";
 
 class GameScene : public QWidget
 {
