@@ -9,5 +9,7 @@
         <file>pic/sweetZombie.png</file>
         <file>pic/background.jpg</file>
         <file>pic/normalZombie.png</file>
+        <file>pic/PeaShooter.png</file>
+        <file>pic/Pea.png</file>
     </qresource>
 </RCC>
