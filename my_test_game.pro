@@ -16,12 +16,16 @@ SOURCES += main.cpp\
         mainmenu.cpp \
     optionbutton.cpp \
     gamescene.cpp \
-    zombie.cpp
+    zombie.cpp \
+    plant.cpp \
+    missile.cpp
 
 HEADERS  += mainmenu.h \
     optionbutton.h \
     gamescene.h \
-    zombie.h
+    zombie.h \
+    plant.h \
+    missile.h
 
 FORMS    += mainmenu.ui
 

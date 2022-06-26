@@ -24,7 +24,7 @@ public:
     GameScene(QWidget *parent = 0);
     void game_start();
 public slots:
-    void zombie_construct();
+    void zombie_construct(int last_row);
 public:
     QGraphicsScene* mainGame;
     QGraphicsView* gameMap;

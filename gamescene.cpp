@@ -8,6 +8,9 @@
 #include <typeinfo>
 #include "optionbutton.h"
 #include <QDebug>
+#include <QTime>
+
+QString zombieName[] = {"noraml", "shit", "flower"};
 
 GameScene::GameScene(QWidget *parent) : QWidget(parent)
 {
@@ -19,6 +22,7 @@ GameScene::GameScene(QWidget *parent) : QWidget(parent)
     mainGame->setSceneRect(-0.5 * mainWidth, -0.5 * mainHeight,
                            mainWidth, mainHeight);
 
+    //设置背景（地图）
     QGraphicsPixmapItem* bkg = new QGraphicsPixmapItem;
     QPixmap img(mapPath);
     bkg->setPixmap(img);
@@ -36,7 +40,6 @@ GameScene::GameScene(QWidget *parent) : QWidget(parent)
     exitButton->setParent(gameMap);
     exitButton->move(0, 0);
     connect(exitButton, QPushButton::clicked, gameMap, &exit);
-    //gameMap->setParent(this);
     // 商店
 
 }
@@ -45,30 +48,52 @@ void GameScene::game_start()
 {
     gameMap->show();
 
-    /*QTimer* zombieBirthTimer = new QTimer;
-    QObject::connect(zombieBirthTimer, &QTimer::timeout,
-                     this, &zombie_construct);
-    zombieBirthTimer->start(5000);*/
-
-    Zombie* newZombie = new Zombie(QString("shit"));
+    //测试用代码
+    /*Plant* newZombie = new Plant();
     mainGame->addItem(newZombie);
-    newZombie->setPos(0, 200);
+    newZombie->setPos(0, 200);*/
 
-    zombie_construct();
 
+    //开始产生僵尸
+    zombie_construct(-1);
+
+    //持续刷新界面
     QTimer* t1 = new QTimer();
     QObject::connect(t1, SIGNAL(timeout()), mainGame, SLOT(advance()));
-    t1->start(100);
+    t1->start(200);
 }
 
-void GameScene::zombie_construct()
+void GameScene::zombie_construct(int last_row)
 {
+    qsrand(QTime(0, 0, 0).secsTo(QTime::currentTime()));
+    //生成僵尸数量少于4只时，每次只会出现一只普通僵尸
     if(Zombie::zombieNum <= 4){
-        Zombie* newZombie = new Zombie(QString("normal"));
+        //随机决定下一只僵尸生成的行
+        int _r = qrand() % 5;
+        //若与上一只在相同行，则生成在下一行
+        if(_r == last_row)
+            _r = (_r + 1) % 5;
+        Zombie* newZombie = new Zombie(QString("normal"), _r);
         mainGame->addItem(newZombie);
-        //newZombie->setPos(700, (qrand() % 5) * (mainHeight / 5) - mainHeight * 0.5);
-        newZombie->setPos(500, 150);
+        newZombie->setPos(500, 162 - _r * 108);
         connect(newZombie, &Zombie::death, this, &zombie_construct);
+    }
+    //第二阶段会出现较强的僵尸，且数量更多
+    else if(Zombie::zombieNum <= 15){
+        int cnt = qrand() % 3 + 1;//每次出现1 ~ 3只僵尸
+        int lr = -1;
+        for(int i = 0; i < cnt; i++){
+           int _r = qrand() % 5;
+           if(_r == lr)
+               _r = (_r + 1) % 5;
+           lr = _r;
+           int _k = qrand() % 3;
+           Zombie* newZombie = new Zombie(zombieName[_k], _r);
+           mainGame->addItem(newZombie);
+           newZombie->setPos(500, 162 - _r * 108);
+           if(i == cnt - 1)
+               connect(newZombie, &Zombie::death, this, &zombie_construct);
+        }
     }
 
 }
