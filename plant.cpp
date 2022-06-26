@@ -54,8 +54,7 @@ QRectF Plant::boundingRect() const{
 
 
 void Plant::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *){
-    //QImage ii(":/pic/" + name + ".png");
-    QImage ii(":/pic/PeaShooter.png");
+    QImage ii(":/pic/" + name + ".png");
     ii = ii.scaled(80, 80);
     painter->drawImage(0, 0, ii);
 }
@@ -84,6 +83,14 @@ bool Plant::AddPlant(Card *card){
         }
     }
     return true;
+}
+
+void Plant::dead(){
+    name="Empty";
+    HP=0;
+    XP=0;
+    level=0;
+    cooldown=1000;
 }
 
 void Plant::movement(){
