@@ -34,6 +34,7 @@ public:
     QTimer *timer;
 
     bool AddPlant(Card *card);//用卡片种植
+    void dead();//植物死亡
 
 public slots:
     void movement();//植物行动
