@@ -16,7 +16,7 @@ QMap<QString, int> Zombie::HPInfo = {
     std::map<QString, int>::value_type("normal", 100)
 };
 QMap<QString, int> Zombie::ATKInfo = {
-    std::map<QString, int>::value_type("normal", 10)
+    std::map<QString, int>::value_type("normal", 100)
 };
 QMap<QString, int> Zombie::SpeedInfo = {
     std::map<QString, int>::value_type("normal", 2),
@@ -34,10 +34,10 @@ Zombie::Zombie(QString _name, int _r):QObject(), name(_name), row(_r){
     stage = 0;
     mode = "move";
     //测试用代码
-    QTimer* t1 = new QTimer(this);
+    /*QTimer* t1 = new QTimer(this);
     connect(t1, &QTimer::timeout, this, &dead);
     t1->setSingleShot(true);
-    t1->start(20000);
+    t1->start(20000);*/
 }
 
 Zombie::~Zombie()
@@ -53,6 +53,8 @@ QRectF Zombie::boundingRect() const
         wid = 140;
     return QRectF(0, 0, wid, 120);
 }
+
+
 
 void Zombie::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *){
 
@@ -119,6 +121,13 @@ void Zombie::dead()
 void Zombie::attack(Plant *p)
 {
     p->HP -= ATK;
-    //if(p->HP <= 0)
-       // p->dead();
+    if(p->HP <= 0)
+         p->dead();
+}
+
+QPainterPath Zombie::shape() const
+{
+    QPainterPath path;
+    path.addEllipse(QRectF(0, 20, 85, 120));
+    return path;
 }

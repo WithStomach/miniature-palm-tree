@@ -9,6 +9,7 @@
 #include "optionbutton.h"
 #include <QDebug>
 #include <QTime>
+#include "missile.h"
 
 QString zombieName[] = {"noraml", "shit", "flower"};
 
@@ -57,6 +58,22 @@ void GameScene::game_start()
     //开始产生僵尸
     zombie_construct(-1);
 
+    //植物初始化
+    Plant *plants[5][9];
+    for (int i=0;i<5;++i)
+        for (int j=0;j<9;++j)
+        {
+            plants[i][j]=new Plant();
+            plants[i][j]->row=i;plants[i][j]->column=j;
+            mainGame->addItem(plants[i][j]);
+            plants[i][j]->setPos(80*j-260,190-i*100);
+            connect(plants[i][j],SIGNAL(missilelaunch(QString,int,int)),this,SLOT(missile_construct(QString,int,int)));
+            //DEBUG
+            plants[i][j]->AddPlant(new Card("PeaShooter"));
+            //DEBUG
+        }
+
+
     //持续刷新界面
     QTimer* t1 = new QTimer();
     QObject::connect(t1, SIGNAL(timeout()), mainGame, SLOT(advance()));
@@ -97,4 +114,10 @@ void GameScene::zombie_construct(int last_row)
         }
     }
 
+}
+
+void GameScene::missile_construct(QString missilename,int row,int column){
+    Missile *missile=new Missile(missilename);
+    mainGame->addItem(missile);
+    missile->setPos(90*column-170,190-row*100);
 }

@@ -4,6 +4,10 @@
 #include "missile.h"
 #endif
 
+#ifndef ZOMBIE_H
+#include "zombie.h"
+#endif
+
 #ifndef GAMESCENE_H
 #include "gamescene.h"
 #endif
@@ -40,7 +44,7 @@ void Card::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *)
 
 
 Plant::Plant(){
-    name="PeaShooter";
+    name="Empty";
     HP=0;
     XP=0;
     level=0;
@@ -49,13 +53,13 @@ Plant::Plant(){
 }
 
 QRectF Plant::boundingRect() const{
-    return QRectF(0, 0, 80, 80);
+    return QRectF(0, 0, 70, 70);
 }
 
 
 void Plant::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *){
     QImage ii(":/pic/" + name + ".png");
-    ii = ii.scaled(80, 80);
+    ii = ii.scaled(70, 70);
     painter->drawImage(0, 0, ii);
 }
 
@@ -95,10 +99,11 @@ void Plant::dead(){
 
 void Plant::movement(){
     if (name=="PeaShooter"){
-        Missile *missile=new Missile("Pea");
-        //mainGame->addItem(missile);
-        missile->setPos(100,0);
-        return ;
+        if (Zombie::rowNum[row])
+        {
+            missilelaunch("Pea",row,column);
+            return ;
+        }
     }
     return ;
 }

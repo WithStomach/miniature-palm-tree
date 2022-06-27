@@ -2,6 +2,7 @@
 #define ZOMBIE_H
 
 #include <QGraphicsItem>
+#include <QPainterPath>
 #include "plant.h"
 
 class Zombie :public QObject, public QGraphicsItem{
@@ -21,7 +22,7 @@ public:
     void advance(int step) Q_DECL_OVERRIDE;
     void dead();
     void attack(Plant* p);
-
+    QPainterPath shape()const;
 
     QString name;
     QString mode;

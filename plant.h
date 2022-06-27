@@ -33,9 +33,14 @@ public:
     int cooldown;
     QTimer *timer;
 
+    int row,column;
+
     bool AddPlant(Card *card);//用卡片种植
     void dead();//植物死亡
 
+
+signals:
+    void missilelaunch(QString missilename,int row,int column);//向mainGame传递子弹信息
 public slots:
     void movement();//植物行动
 };
