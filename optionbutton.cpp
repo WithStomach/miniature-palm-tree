@@ -7,9 +7,9 @@
 OptionButton::OptionButton(int width, int height, QString optionName)
 {
     this->option = optionName;
-    QPixmap img(":/pic/" + option + ".jpg");
+    QPixmap img(":/pic/" + option + ".png");
     this->setFixedSize(width, height);
-    img = img.scaled(this->width() * 0.5, this->height() * 0.5);
+    img = img.scaled(this->width(), this->height());
     this->setStyleSheet("QPushButton{border:0px;}");
     this->setIcon(img);
     this->setIconSize(QSize(this->width(), this->height()));

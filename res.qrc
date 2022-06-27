@@ -5,11 +5,14 @@
         <file>pic/map.jpg</file>
         <file>pic/save.jpg</file>
         <file>pic/shitZombie.png</file>
-        <file>pic/start.jpg</file>
         <file>pic/sweetZombie.png</file>
         <file>pic/background.jpg</file>
         <file>pic/PeaShooter.png</file>
         <file>pic/Pea.png</file>
+        <file>pic/beginMenu.png</file>
+        <file>pic/start.png</file>
+        <file>pic/exit.png</file>
+        <file>pic/save.png</file>
     </qresource>
     <qresource prefix="/Zombie">
         <file>zombiePic/normalZombie_move(1).png</file>

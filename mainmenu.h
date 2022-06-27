@@ -15,7 +15,7 @@
 #include "gamescene.h"
 
 static const QString iconPath = ""; //窗口图标路径
-static const QString bkgPath = ":/pic/background.jpg"; //背景图片路径
+static const QString bkgPath = ":/pic/beginMenu.png"; //背景图片路径
 static const int mainWidth = 1020, mainHeight = 600; //主窗口尺寸
 
 namespace Ui {
