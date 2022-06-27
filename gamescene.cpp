@@ -67,6 +67,7 @@ void GameScene::game_start()
             plants[i][j]->row=i;plants[i][j]->column=j;
             mainGame->addItem(plants[i][j]);
             plants[i][j]->setPos(80*j-260,190-i*100);
+            //190 260, 90 160, -10 60, -110 -30, -210 -140
             connect(plants[i][j],SIGNAL(missilelaunch(QString,int,int)),this,SLOT(missile_construct(QString,int,int)));
             //DEBUG
             plants[i][j]->AddPlant(new Card("PeaShooter"));
@@ -92,7 +93,7 @@ void GameScene::zombie_construct(int last_row)
             _r = (_r + 1) % 5;
         Zombie* newZombie = new Zombie(QString("normal"), _r);
         mainGame->addItem(newZombie);
-        newZombie->setPos(500, 162 - _r * 108);
+        newZombie->setPos(500, 150 - _r * 100);
         //newZombie->setPos(500, 200);
         connect(newZombie, &Zombie::death, this, &zombie_construct);
     }
@@ -109,6 +110,7 @@ void GameScene::zombie_construct(int last_row)
            Zombie* newZombie = new Zombie(zombieName[_k], _r);
            mainGame->addItem(newZombie);
            newZombie->setPos(500, 162 - _r * 108);
+           //162 282, 54, -54, -162, -270
            if(i == cnt - 1)
                connect(newZombie, &Zombie::death, this, &zombie_construct);
         }

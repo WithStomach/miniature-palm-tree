@@ -14,14 +14,14 @@ QMap<QString, int> Missile::DamageInfo={
 
 Missile::Missile(QString _name):QObject(),name(_name){
     damage=0;
-    speed=300;
+    speed=50;
 };
 
 Missile::~Missile(){}
 
 QRectF Missile::boundingRect() const
 {
-    return QRectF(0, 0, 30, 30);
+    return QRectF(0, 0, 30, 80);
 }
 
 void Missile::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *){
@@ -53,8 +53,8 @@ void Missile::advance(int step=1){
 }
 
 void Missile::hit(Zombie *target){
-    target->HP-=damage;
-    if (target->HP<=0)
+    target->HP -= damage;
+    if (target->HP<=0 && target->mode != "dead")
         target->dead();
     delete this;
 }

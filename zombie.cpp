@@ -77,7 +77,8 @@ void Zombie::advance(int step = 1){
         return;
     }
     const char* n = typeid(Plant).name();
-    QList<QGraphicsItem*> dd = this->scene()->collidingItems(this, Qt::IntersectsItemBoundingRect);
+    QList<QGraphicsItem*> dd = this->scene()->collidingItems(this,
+                                                             Qt::IntersectsItemShape);
     QList<QGraphicsItem*>::iterator it = dd.begin();
     // 如果僵尸与植物单位发生碰撞，停止移动开始攻击
     for(; it != dd.end(); it++){
@@ -107,7 +108,7 @@ void Zombie::advance(int step = 1){
         stage++;
         stage %= 21;
         this->update();
-        if(stage == 20)
+        if(stage % 10 == 0)
             attack((Plant*)(*it));
     }
 }
@@ -128,6 +129,6 @@ void Zombie::attack(Plant *p)
 QPainterPath Zombie::shape() const
 {
     QPainterPath path;
-    path.addEllipse(QRectF(0, 20, 85, 120));
+    path.addEllipse(QRectF(0, 20, 85, 80));
     return path;
 }
