@@ -49,9 +49,9 @@ void GameScene::game_start()
     gameMap->show();
 
     //测试用代码
-    /*Plant* newZombie = new Plant();
+    Plant* newZombie = new Plant();
     mainGame->addItem(newZombie);
-    newZombie->setPos(0, 200);*/
+    newZombie->setPos(200, 200);
 
 
     //开始产生僵尸
@@ -76,6 +76,7 @@ void GameScene::zombie_construct(int last_row)
         Zombie* newZombie = new Zombie(QString("normal"), _r);
         mainGame->addItem(newZombie);
         newZombie->setPos(500, 162 - _r * 108);
+        //newZombie->setPos(500, 200);
         connect(newZombie, &Zombie::death, this, &zombie_construct);
     }
     //第二阶段会出现较强的僵尸，且数量更多

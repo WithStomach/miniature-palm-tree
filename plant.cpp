@@ -40,7 +40,7 @@ void Card::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *)
 
 
 Plant::Plant(){
-    name="Empty";
+    name="PeaShooter";
     HP=0;
     XP=0;
     level=0;

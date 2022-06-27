@@ -24,6 +24,7 @@ public:
 
 
     QString name;
+    QString mode;
     int HP;
     int ATK;
     int speed;
