@@ -1,11 +1,5 @@
 <RCC>
     <qresource prefix="/">
-        <file>pic/exit.jpg</file>
-        <file>pic/flowerZombie.png</file>
-        <file>pic/map.jpg</file>
-        <file>pic/save.jpg</file>
-        <file>pic/shitZombie.png</file>
-        <file>pic/sweetZombie.png</file>
         <file>pic/background.jpg</file>
         <file>pic/PeaShooter.png</file>
         <file>pic/Pea.png</file>
@@ -13,6 +7,9 @@
         <file>pic/start.png</file>
         <file>pic/exit.png</file>
         <file>pic/save.png</file>
+        <file>pic/Empty.png</file>
+        <file>pic/HP.png</file>
+        <file>pic/XP.png</file>
     </qresource>
     <qresource prefix="/Zombie">
         <file>zombiePic/normalZombie_move(1).png</file>

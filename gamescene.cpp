@@ -79,11 +79,3 @@ void GameScene::game_start()
     QObject::connect(t1, SIGNAL(timeout()), mainGame, SLOT(advance()));
     t1->start(200);
 }
-
-
-
-void GameScene::missile_construct(QString missilename,int row,int column){
-    Missile *missile=new Missile(missilename);
-    mainGame->addItem(missile);
-    missile->setPos(90*column-170,190-row*100);
-}
