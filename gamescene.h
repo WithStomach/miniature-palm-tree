@@ -14,6 +14,7 @@
 #include <QGraphicsScene>
 #include <QGraphicsView>
 #include <QString>
+#include <QTimer>
 
 static QString const mapPath = ":/pic/background.jpg";
 
@@ -26,9 +27,15 @@ public:
 public slots:
     void zombie_construct(int last_row);
     void missile_construct(QString missilename,int row,int column);
+    void pause();
+    void back_main_menu();
 public:
+    QTimer* update_t;
     QGraphicsScene* mainGame;
     QGraphicsView* gameMap;
+    bool is_going;
+signals:
+    void back();
 };
 
 #endif // GAMESCENE_H

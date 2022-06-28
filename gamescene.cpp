@@ -10,18 +10,23 @@
 #include <QDebug>
 #include <QTime>
 #include "missile.h"
-
+#include <QDialog>
 
 
 GameScene::GameScene(QWidget *parent) : QWidget(parent)
 {
+    is_going = true;
+    for(int i = 0; i < 5; i++)
+       Zombie::rowNum[i] = 0;
 
     this->setFixedSize(mainWidth, mainHeight);
-    OptionButton* exitButton = new OptionButton(300, 50, "exit");
+
     mainGame = new QGraphicsScene;
     mainGame->setItemIndexMethod(QGraphicsScene::NoIndex);
     mainGame->setSceneRect(-0.5 * mainWidth, -0.5 * mainHeight,
                            mainWidth, mainHeight);
+    update_t = new QTimer();
+    connect(update_t, SIGNAL(timeout()), mainGame, SLOT(advance()));
 
     //设置背景（地图）
     QGraphicsPixmapItem* bkg = new QGraphicsPixmapItem;
@@ -38,11 +43,15 @@ GameScene::GameScene(QWidget *parent) : QWidget(parent)
     gameMap->setSceneRect(-0.5 * mainWidth, -0.5 * mainHeight,
                           mainWidth, mainHeight);
     gameMap->setFixedSize(mainWidth + 5, mainHeight + 5);
-    exitButton->setParent(gameMap);
-    exitButton->move(0, 0);
-    connect(exitButton, QPushButton::clicked, gameMap, &exit);
+    OptionButton* pauseButton = new OptionButton(100, 40, "pause");
+    OptionButton* back_menu = new OptionButton(100, 40, "back_menu");
+    pauseButton->setParent(gameMap);
+    back_menu->setParent(gameMap);
+    pauseButton->move(900, 0);
+    back_menu->move(700, 0);
+    connect(pauseButton, &QPushButton::clicked, this, &pause);
+    connect(back_menu, &QPushButton::clicked, this, &back_main_menu);
     // 商店
-
 }
 
 void GameScene::game_start()
@@ -75,7 +84,23 @@ void GameScene::game_start()
 
 
     //持续刷新界面
-    QTimer* t1 = new QTimer();
-    QObject::connect(t1, SIGNAL(timeout()), mainGame, SLOT(advance()));
-    t1->start(200);
+    update_t->start(200);
+}
+
+void GameScene::pause(){
+   if(is_going){
+       is_going = false;
+       update_t->stop();
+   }
+   else{
+       update_t->start(200);
+       is_going = true;
+   }
+}
+
+void GameScene::back_main_menu()
+{
+    this->gameMap->close();
+    emit back();
+    delete this;
 }

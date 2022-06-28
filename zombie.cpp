@@ -36,16 +36,6 @@ QMap<QString, int> Zombie::Hei = {
     std::map<QString, int>::value_type("block", 144),
     std::map<QString, int>::value_type("paper", 137)
 };
-QMap<QString, int> Zombie::Wid = {
-    std::map<QString, int>::value_type("normal", 2),
-    std::map<QString, int>::value_type("block", 2),
-    std::map<QString, int>::value_type("paper", 2)
-};
-QMap<QString, int> Zombie::Stage = {
-    std::map<QString, int>::value_type("normal", 0),
-    std::map<QString, int>::value_type("block", 1),
-    std::map<QString, int>::value_type("paper", 1)
-};
 QMap<QString, int> Zombie::StepNum = {
     std::map<QString, int>::value_type("normal", 21),
     std::map<QString, int>::value_type("block", 21),
@@ -153,7 +143,7 @@ void Zombie::dead()
             stage = 19;
             HP = HPInfo[name];
             step = 0;
-            speed = 3;
+            speed *= 2;
             ATK *= 2;
             mStep = 14;
             return;

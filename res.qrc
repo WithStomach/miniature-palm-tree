@@ -10,6 +10,12 @@
         <file>pic/Empty.png</file>
         <file>pic/HP.png</file>
         <file>pic/XP.png</file>
+        <file>pic/back_game.png</file>
+        <file>pic/over_game.png</file>
+        <file>pic/restart_game.png</file>
+        <file>pic/back_menu.png</file>
+        <file>pic/setMenu.png</file>
+        <file>pic/pause.png</file>
     </qresource>
     <qresource prefix="/Zombie">
         <file>zombiePic/normalZombie_move(1).png</file>

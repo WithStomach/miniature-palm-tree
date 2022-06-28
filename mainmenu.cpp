@@ -60,7 +60,7 @@ void MainMenu::game_start()
 {
     this->hide();
     this->gameWidget = new GameScene();
+    connect(gameWidget, &GameScene::back, this, &show);
     gameWidget->game_start();
-    
 }
 
