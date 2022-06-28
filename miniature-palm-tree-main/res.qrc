@@ -1,0 +1,39 @@
+<RCC>
+    <qresource prefix="/">
+        <file>pic/exit.jpg</file>
+        <file>pic/flowerZombie.png</file>
+        <file>pic/map.jpg</file>
+        <file>pic/save.jpg</file>
+        <file>pic/shitZombie.png</file>
+        <file>pic/start.jpg</file>
+        <file>pic/sweetZombie.png</file>
+        <file>pic/background.jpg</file>
+        <file>pic/PeaShooter.png</file>
+        <file>pic/Pea.png</file>
+        <file>pic/Empty.png</file>
+    </qresource>
+    <qresource prefix="/Zombie">
+        <file>zombiePic/normalZombie(1).png</file>
+        <file>zombiePic/normalZombie(2).png</file>
+        <file>zombiePic/normalZombie(3).png</file>
+        <file>zombiePic/normalZombie(4).png</file>
+        <file>zombiePic/normalZombie(5).png</file>
+        <file>zombiePic/normalZombie(6).png</file>
+        <file>zombiePic/normalZombie(7).png</file>
+        <file>zombiePic/normalZombie(8).png</file>
+        <file>zombiePic/normalZombie(9).png</file>
+        <file>zombiePic/normalZombie(10).png</file>
+        <file>zombiePic/normalZombie(11).png</file>
+        <file>zombiePic/normalZombie(12).png</file>
+        <file>zombiePic/normalZombie(13).png</file>
+        <file>zombiePic/normalZombie(14).png</file>
+        <file>zombiePic/normalZombie(15).png</file>
+        <file>zombiePic/normalZombie(16).png</file>
+        <file>zombiePic/normalZombie(17).png</file>
+        <file>zombiePic/normalZombie(18).png</file>
+        <file>zombiePic/normalZombie(19).png</file>
+        <file>zombiePic/normalZombie(20).png</file>
+        <file>zombiePic/normalZombie(21).png</file>
+        <file>zombiePic/normalZombie(22).png</file>
+    </qresource>
+</RCC>
