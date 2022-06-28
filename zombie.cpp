@@ -10,23 +10,35 @@
 #include <QTime>
 #include "plant.h"
 #include <synchapi.h>
+#include <QSound>
 #include "gamescene.h"
 
-QString zombieName[] = {"noraml", "shit", "flower"};
+QString zombieName[] = {"noraml", "block", "flower"};
 int Zombie::zombieNum = 0;
 int Zombie::rowNum[5] = {0, 0, 0, 0, 0};
 QMap<QString, int> Zombie::HPInfo = {
-    std::map<QString, int>::value_type("normal", 100)
+    std::map<QString, int>::value_type("normal", 100),
+    std::map<QString, int>::value_type("block", 200)
 };
 QMap<QString, int> Zombie::ATKInfo = {
-    std::map<QString, int>::value_type("normal", 100)
+    std::map<QString, int>::value_type("normal", 100),
+    std::map<QString, int>::value_type("block", 100)
 };
 QMap<QString, int> Zombie::SpeedInfo = {
     std::map<QString, int>::value_type("normal", 2),
-    std::map<QString, int>::value_type("shit", 2),
+    std::map<QString, int>::value_type("block", 2),
     std::map<QString, int>::value_type("flower", 2)
 };
-
+QMap<QString, int> Zombie::Hei = {
+    std::map<QString, int>::value_type("normal", 120),
+    std::map<QString, int>::value_type("block", 144),
+    std::map<QString, int>::value_type("flower", 2)
+};
+QMap<QString, int> Zombie::Wid = {
+    std::map<QString, int>::value_type("normal", 2),
+    std::map<QString, int>::value_type("block", 2),
+    std::map<QString, int>::value_type("flower", 2)
+};
 
 Zombie::Zombie(QString _name, int _r):QObject(), name(_name), row(_r){
     Zombie::zombieNum++;
@@ -54,7 +66,7 @@ QRectF Zombie::boundingRect() const
     int wid = 85;
     if(mode == "dead")
         wid = 140;
-    return QRectF(0, 0, wid, 120);
+    return QRectF(0, 0, wid, Hei[name]);
 }
 
 
@@ -63,7 +75,7 @@ void Zombie::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget 
 
     QImage ii(":/Zombie/zombiePic/" + name + "Zombie_" + mode +
               "(" + QString::number(stage + 1) + ").png");
-    painter->drawImage(0, 120 - ii.height(), ii);
+    painter->drawImage(0, Hei[name] - ii.height(), ii);
 }
 
 void Zombie::advance(int step = 1){
@@ -100,7 +112,7 @@ void Zombie::advance(int step = 1){
             mode = "move";
         }
         stage++;
-        stage %= 22;
+        stage %= 21;
         setPos(mapToParent(-speed, 0));
     }
     else{
@@ -109,7 +121,7 @@ void Zombie::advance(int step = 1){
             mode = "attack";
         }
         stage++;
-        stage %= 21;
+        stage %= 11;
         this->update();
         if(stage % 10 == 0)
             attack((Plant*)(*it));
@@ -132,7 +144,7 @@ void Zombie::attack(Plant *p)
 QPainterPath Zombie::shape() const
 {
     QPainterPath path;
-    path.addEllipse(QRectF(0, 20, 85, 80));
+    path.addEllipse(QRectF(0, Hei[name] - 100, 85, Hei[name] - 40));
     return path;
 }
 
@@ -146,9 +158,9 @@ void GameScene::zombie_construct(int last_row)
         //若与上一只在相同行，则生成在下一行
         if(_r == last_row)
             _r = (_r + 1) % 5;
-        Zombie* newZombie = new Zombie(QString("normal"), _r);
+        Zombie* newZombie = new Zombie(QString("block"), _r);
         mainGame->addItem(newZombie);
-        newZombie->setPos(500, 150 - _r * 100);
+        newZombie->setPos(500, 270 - Zombie::Hei[newZombie->name] - _r * 100);
         //newZombie->setPos(500, 200);
         connect(newZombie, &Zombie::death, this, &zombie_construct);
     }
