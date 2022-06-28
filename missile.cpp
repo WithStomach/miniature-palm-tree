@@ -1,4 +1,5 @@
 #include "missile.h"
+#include "gamescene.h"
 #include <QPainter>
 #include <QDebug>
 #include <QMap>
@@ -28,6 +29,12 @@ void Missile::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget
     QImage ii(":/pic/" + name + ".png");
     ii = ii.scaled(30, 30);
     painter->drawImage(0, 0, ii);
+}
+
+void GameScene::missile_construct(QString missilename,int row,int column){
+    Missile *missile=new Missile(missilename);
+    mainGame->addItem(missile);
+    missile->setPos(80*column-170,190-row*100);
 }
 
 void Missile::advance(int step=1){

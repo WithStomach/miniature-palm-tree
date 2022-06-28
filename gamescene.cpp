@@ -11,7 +11,7 @@
 #include <QTime>
 #include "missile.h"
 
-
+QString zombieName[] = {"noraml", "shit", "flower"};
 
 GameScene::GameScene(QWidget *parent) : QWidget(parent)
 {
@@ -66,7 +66,7 @@ void GameScene::game_start()
             plants[i][j]=new Plant();
             plants[i][j]->row=i;plants[i][j]->column=j;
             mainGame->addItem(plants[i][j]);
-            plants[i][j]->setPos(80*j-260,190-i*100);
+            plants[i][j]->setPos(80*j-250,190-i*100);
             //190 260, 90 160, -10 60, -110 -30, -210 -140
             connect(plants[i][j],SIGNAL(missilelaunch(QString,int,int)),this,SLOT(missile_construct(QString,int,int)));
             //DEBUG
@@ -74,17 +74,12 @@ void GameScene::game_start()
             //DEBUG
         }
 
+    //DEBUG
+    plants[3][5]->AddPlant(new Card("PeaShooter"));
+    //DEBUG
 
     //持续刷新界面
     QTimer* t1 = new QTimer();
     QObject::connect(t1, SIGNAL(timeout()), mainGame, SLOT(advance()));
     t1->start(200);
-}
-
-
-
-void GameScene::missile_construct(QString missilename,int row,int column){
-    Missile *missile=new Missile(missilename);
-    mainGame->addItem(missile);
-    missile->setPos(90*column-170,190-row*100);
 }

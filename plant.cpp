@@ -58,9 +58,22 @@ QRectF Plant::boundingRect() const{
 
 
 void Plant::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *){
-    QImage ii(":/pic/" + name + ".png");
-    ii = ii.scaled(70, 70);
-    painter->drawImage(0, 0, ii);
+    QImage pic(":/pic/" + name + ".png");
+    pic = pic.scaled(70, 70);
+    painter->drawImage(0, 0, pic);
+    if (name!="Empty")
+    {
+        QRectF HP_all(0,70,70,5);
+        painter->drawRect(HP_all);
+        QImage hp(":/pic/HP.png");
+        hp = hp.scaled((double(HP)/HPInfo[name])*70, 5);
+        painter->drawImage(0,70,hp);
+        QRectF XP_all(0,75,70,5);
+        painter->drawRect(XP_all);
+        QImage xp(":/pic/XP.png");
+        xp = xp.scaled((double(XP)/level_limit[level])*70, 5);
+        painter->drawImage(0,75,xp);
+    }
 }
 
 bool Plant::AddPlant(Card *card){
