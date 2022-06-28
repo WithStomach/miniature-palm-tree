@@ -14,7 +14,7 @@ QMap<QString, int> Missile::DamageInfo={
 };
 
 Missile::Missile(QString _name):QObject(),name(_name){
-    damage=0;
+    damage=2;
     speed=50;
 };
 

@@ -11,7 +11,7 @@ public:
     static int zombieNum;//记录自游戏开始起生成的僵尸总数
     static int rowNum[5];//记录每一行的僵尸数量
     // 记录僵尸各项数据的map，通过僵尸名字获取信息
-    static QMap<QString, int> HPInfo, ATKInfo, SpeedInfo, Hei, Wid;
+    static QMap<QString, int> HPInfo, ATKInfo, SpeedInfo, Hei, Wid, Stage, StepNum;
 
 
 
@@ -32,6 +32,8 @@ public:
     int speed;
     int row;
     int stage;
+    int step;
+    int mStep;
 
 signals:
     // 僵尸死亡时发出信号

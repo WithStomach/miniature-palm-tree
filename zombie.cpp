@@ -13,31 +13,43 @@
 #include <QSound>
 #include "gamescene.h"
 
-QString zombieName[] = {"noraml", "block", "flower"};
+QString zombieName[] = {"noraml", "block", "paper"};
 int Zombie::zombieNum = 0;
 int Zombie::rowNum[5] = {0, 0, 0, 0, 0};
 QMap<QString, int> Zombie::HPInfo = {
     std::map<QString, int>::value_type("normal", 100),
-    std::map<QString, int>::value_type("block", 200)
+    std::map<QString, int>::value_type("block", 100),
+    std::map<QString, int>::value_type("paper", 100),
 };
 QMap<QString, int> Zombie::ATKInfo = {
     std::map<QString, int>::value_type("normal", 100),
-    std::map<QString, int>::value_type("block", 100)
+    std::map<QString, int>::value_type("block", 100),
+    std::map<QString, int>::value_type("paper", 100)
 };
 QMap<QString, int> Zombie::SpeedInfo = {
     std::map<QString, int>::value_type("normal", 2),
     std::map<QString, int>::value_type("block", 2),
-    std::map<QString, int>::value_type("flower", 2)
+    std::map<QString, int>::value_type("paper", 2)
 };
 QMap<QString, int> Zombie::Hei = {
     std::map<QString, int>::value_type("normal", 120),
     std::map<QString, int>::value_type("block", 144),
-    std::map<QString, int>::value_type("flower", 2)
+    std::map<QString, int>::value_type("paper", 137)
 };
 QMap<QString, int> Zombie::Wid = {
     std::map<QString, int>::value_type("normal", 2),
     std::map<QString, int>::value_type("block", 2),
-    std::map<QString, int>::value_type("flower", 2)
+    std::map<QString, int>::value_type("paper", 2)
+};
+QMap<QString, int> Zombie::Stage = {
+    std::map<QString, int>::value_type("normal", 0),
+    std::map<QString, int>::value_type("block", 1),
+    std::map<QString, int>::value_type("paper", 1)
+};
+QMap<QString, int> Zombie::StepNum = {
+    std::map<QString, int>::value_type("normal", 21),
+    std::map<QString, int>::value_type("block", 21),
+    std::map<QString, int>::value_type("paper", 19)
 };
 
 Zombie::Zombie(QString _name, int _r):QObject(), name(_name), row(_r){
@@ -47,6 +59,8 @@ Zombie::Zombie(QString _name, int _r):QObject(), name(_name), row(_r){
     speed = Zombie::SpeedInfo[name];
     rowNum[row]++;
     stage = 0;
+    step = 0;
+    mStep = StepNum[name];
     mode = "move";
     //测试用代码
     /*QTimer* t1 = new QTimer(this);
@@ -60,32 +74,28 @@ Zombie::~Zombie()
     rowNum[row]--;
 }
 
-
 QRectF Zombie::boundingRect() const
 {
-    int wid = 85;
+    int wid = 100;
     if(mode == "dead")
         wid = 140;
     return QRectF(0, 0, wid, Hei[name]);
 }
 
-
-
 void Zombie::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *){
-
     QImage ii(":/Zombie/zombiePic/" + name + "Zombie_" + mode +
-              "(" + QString::number(stage + 1) + ").png");
+              "(" + QString::number(step + 1 + stage) + ").png");
     painter->drawImage(0, Hei[name] - ii.height(), ii);
 }
 
-void Zombie::advance(int step = 1){
-    if(!step)
+void Zombie::advance(int s = 1){
+    if(!s)
         return;
     bool e = true;
     if(mode == "dead"){
         update();
-        stage++;
-        if(stage == 10){
+        step++;
+        if(step == 10){
             emit(death(row));
             delete this;
         }
@@ -108,30 +118,50 @@ void Zombie::advance(int step = 1){
     }
     if(e){
         if(mode == "attack"){
-            stage = 0;
+            step = 0;
             mode = "move";
         }
-        stage++;
-        stage %= 21;
+        step++;
+        step %= mStep;
         setPos(mapToParent(-speed, 0));
     }
     else{
         if(mode == "move"){
-            stage = 0;
+            step = 0;
             mode = "attack";
         }
-        stage++;
-        stage %= 11;
+        step++;
+        step %= 11;
         this->update();
-        if(stage % 10 == 0)
+        if(step % 5 == 0 && step != 0)
             attack((Plant*)(*it));
     }
 }
 
 void Zombie::dead()
 {
+    if(stage == 0){
+        if(name == "block"){
+            name = "normal";
+            HP = HPInfo[name];
+            step = 0;
+            mStep = StepNum[name];
+            setPos(this->x(), 270 - Hei[name] - row * 100);
+            return;
+        }
+        else if(name == "paper"){
+            stage = 19;
+            HP = HPInfo[name];
+            step = 0;
+            speed = 3;
+            ATK *= 2;
+            mStep = 14;
+            return;
+        }
+    }
     mode = "dead";
     stage = 0;
+    step = 0;
 }
 
 void Zombie::attack(Plant *p)
@@ -158,7 +188,7 @@ void GameScene::zombie_construct(int last_row)
         //若与上一只在相同行，则生成在下一行
         if(_r == last_row)
             _r = (_r + 1) % 5;
-        Zombie* newZombie = new Zombie(QString("block"), _r);
+        Zombie* newZombie = new Zombie(QString("paper"), _r);
         mainGame->addItem(newZombie);
         newZombie->setPos(500, 270 - Zombie::Hei[newZombie->name] - _r * 100);
         //newZombie->setPos(500, 200);
@@ -176,11 +206,9 @@ void GameScene::zombie_construct(int last_row)
            int _k = qrand() % 3;
            Zombie* newZombie = new Zombie(zombieName[_k], _r);
            mainGame->addItem(newZombie);
-           newZombie->setPos(500, 162 - _r * 108);
-           //162 282, 54, -54, -162, -270
+           newZombie->setPos(500, 270 - Zombie::Hei[newZombie->name] - _r * 100);
            if(i == cnt - 1)
                connect(newZombie, &Zombie::death, this, &zombie_construct);
         }
     }
-
 }
