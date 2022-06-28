@@ -36,7 +36,6 @@
         <file>zombiePic/normalZombie_move(19).png</file>
         <file>zombiePic/normalZombie_move(20).png</file>
         <file>zombiePic/normalZombie_move(21).png</file>
-        <file>zombiePic/normalZombie_move(22).png</file>
         <file>zombiePic/normalZombie_attack(1).png</file>
         <file>zombiePic/normalZombie_attack(2).png</file>
         <file>zombiePic/normalZombie_attack(3).png</file>
@@ -48,16 +47,6 @@
         <file>zombiePic/normalZombie_attack(9).png</file>
         <file>zombiePic/normalZombie_attack(10).png</file>
         <file>zombiePic/normalZombie_attack(11).png</file>
-        <file>zombiePic/normalZombie_attack(12).png</file>
-        <file>zombiePic/normalZombie_attack(13).png</file>
-        <file>zombiePic/normalZombie_attack(14).png</file>
-        <file>zombiePic/normalZombie_attack(15).png</file>
-        <file>zombiePic/normalZombie_attack(16).png</file>
-        <file>zombiePic/normalZombie_attack(17).png</file>
-        <file>zombiePic/normalZombie_attack(18).png</file>
-        <file>zombiePic/normalZombie_attack(19).png</file>
-        <file>zombiePic/normalZombie_attack(20).png</file>
-        <file>zombiePic/normalZombie_attack(21).png</file>
         <file>zombiePic/normalZombie_dead(1).png</file>
         <file>zombiePic/normalZombie_dead(2).png</file>
         <file>zombiePic/normalZombie_dead(3).png</file>
@@ -68,5 +57,37 @@
         <file>zombiePic/normalZombie_dead(8).png</file>
         <file>zombiePic/normalZombie_dead(9).png</file>
         <file>zombiePic/normalZombie_dead(10).png</file>
+        <file>zombiePic/blockZombie_move(1).png</file>
+        <file>zombiePic/blockZombie_move(2).png</file>
+        <file>zombiePic/blockZombie_move(3).png</file>
+        <file>zombiePic/blockZombie_move(4).png</file>
+        <file>zombiePic/blockZombie_move(5).png</file>
+        <file>zombiePic/blockZombie_move(6).png</file>
+        <file>zombiePic/blockZombie_move(7).png</file>
+        <file>zombiePic/blockZombie_move(8).png</file>
+        <file>zombiePic/blockZombie_move(9).png</file>
+        <file>zombiePic/blockZombie_move(10).png</file>
+        <file>zombiePic/blockZombie_move(11).png</file>
+        <file>zombiePic/blockZombie_move(12).png</file>
+        <file>zombiePic/blockZombie_move(13).png</file>
+        <file>zombiePic/blockZombie_move(14).png</file>
+        <file>zombiePic/blockZombie_move(15).png</file>
+        <file>zombiePic/blockZombie_move(16).png</file>
+        <file>zombiePic/blockZombie_move(17).png</file>
+        <file>zombiePic/blockZombie_move(18).png</file>
+        <file>zombiePic/blockZombie_move(19).png</file>
+        <file>zombiePic/blockZombie_move(20).png</file>
+        <file>zombiePic/blockZombie_move(21).png</file>
+        <file>zombiePic/blockZombie_attack(1).png</file>
+        <file>zombiePic/blockZombie_attack(2).png</file>
+        <file>zombiePic/blockZombie_attack(3).png</file>
+        <file>zombiePic/blockZombie_attack(4).png</file>
+        <file>zombiePic/blockZombie_attack(5).png</file>
+        <file>zombiePic/blockZombie_attack(6).png</file>
+        <file>zombiePic/blockZombie_attack(7).png</file>
+        <file>zombiePic/blockZombie_attack(8).png</file>
+        <file>zombiePic/blockZombie_attack(9).png</file>
+        <file>zombiePic/blockZombie_attack(10).png</file>
+        <file>zombiePic/blockZombie_attack(11).png</file>
     </qresource>
 </RCC>
