@@ -16,6 +16,7 @@
 #include <QString>
 #include <QTimer>
 #include "card.h"
+#include "plant.h"
 
 
 static QString const mapPath = ":/pic/background.png";
@@ -28,10 +29,13 @@ public:
     MainGame();
     ~MainGame();
     Card* card[3];//商店中3张卡牌
-    bool waiting; // 是否正在等待二次点击种植植物
+    Plant* plants[5][9];
+    int waiting; // 是否正在等待二次点击种植植物,0表示不是，非0则表示卡片编号
     void mousePressEvent(QGraphicsSceneMouseEvent*);
 public slots:
-    void card_clicked();
+    void card_clicked(int n);
+    void plant_clicked(int row,int column);
+    void missile_construct(QString missilename,int row,int column,int level);
 };
 
 class GameScene : public QWidget
@@ -42,7 +46,7 @@ public:
     void game_start();
 public slots:
     void zombie_construct(int last_row);
-    void missile_construct(QString missilename,int row,int column,int level);
+
     void pause();
     void back_main_menu();
     void lose();

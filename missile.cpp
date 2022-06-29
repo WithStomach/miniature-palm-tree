@@ -40,9 +40,9 @@ void Missile::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget
     painter->drawImage(0, 0, missile);
 }
 
-void GameScene::missile_construct(QString missilename,int row,int column,int level=0){
+void MainGame::missile_construct(QString missilename,int row,int column,int level=0){
     Missile *missile=new Missile(missilename,level);
-    mainGame->addItem(missile);
+    addItem(missile);
     int delay=0,below=0;
     if (missilename=="PiercingPea")
         delay=10;

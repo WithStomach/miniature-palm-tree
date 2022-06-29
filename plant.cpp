@@ -147,3 +147,22 @@ void Plant::movement(){
     }
     return ;
 }
+
+void Plant::clicked(){
+    plant_clicked(row,column);
+}
+
+void MainGame::plant_clicked(int row,int column){
+    if (waiting)
+    {
+        if (plants[row][column]->AddPlant(card[waiting]))
+        {
+
+        }
+        else
+        {
+
+        }
+    }
+    return ;
+}

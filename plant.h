@@ -13,6 +13,7 @@ public:
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
                QWidget *widget) Q_DECL_OVERRIDE;
     void advance(int step) Q_DECL_OVERRIDE;
+    void clicked();
 
     QString name;
     static QMap<QString, int> HPInfo;
@@ -31,6 +32,7 @@ public:
 
 signals:
     void missilelaunch(QString missilename,int row,int column,int level=0);//向mainGame传递子弹信息
+    void plant_clicked(int row,int column);
 public slots:
     void movement();//植物行动
 };

@@ -25,17 +25,28 @@
 #include <QtGlobal>
 
 Card::Card(QString _name=""):QObject(), name(_name){
-
+    is_clicked=false;
+    number=0;
 }
 
 Card::~Card(){}
 
 QRectF Card::boundingRect() const{
-    return QRectF(0, 0, 200, 150);
+    return QRectF(0, 0, 200, 120);
 }
 
 void Card::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *){
-    QImage ii(":/pic/" + name + "Card.png");
-    ii = ii.scaled(200, 150);
-    painter->drawImage(0, 0, ii);
+    setZValue(30);
+    QImage img(":/pic/" + name + "Card.png");
+    img = img.scaled(200, 120);
+    painter->drawImage(0, 0, img);
+}
+
+void Card::clicked(){
+    is_clicked=true;
+    card_clicked(number);
+}
+
+void MainGame::card_clicked(int n){
+    waiting=n;
 }

@@ -10,11 +10,10 @@
 #include <QDebug>
 #include <QTime>
 #include "missile.h"
+#include "plant.h"
 #include <QDialog>
 #include <QGraphicsSceneMouseEvent>
 #include <QMouseEvent>
-
-
 
 QString GameScene::zombieName[4] = {"normal", "block", "paper", "football"};
 QString MainGame::cardName[5] = {};
@@ -61,34 +60,11 @@ void GameScene::game_start()
 {
     gameMap->show();
 
-    //测试用代码
-    Plant* newZombie = new Plant();
-    mainGame->addItem(newZombie);
-    newZombie->setPos(200, 200);
-
-
     //开始产生僵尸
     zombie_construct(-1);
 
-    //植物初始化
-    Plant *plants[5][9];
-    for (int i=0;i<5;++i)
-        for (int j=0;j<9;++j)
-        {
-            plants[i][j]=new Plant();
-            plants[i][j]->row=i;plants[i][j]->column=j;
-            mainGame->addItem(plants[i][j]);
-            plants[i][j]->setPos(80*j-250,190-i*100);
-            connect(plants[i][j],SIGNAL(missilelaunch(QString,int,int,int)),this,SLOT(missile_construct(QString,int,int,int)));
-            //DEBUG
-            if (j<2)
-                for (int k=1;k<=3;++k)
-                    plants[i][j]->AddPlant(new Card("PeaShooter"));
-            //DEBUG
-        }
-
     //DEBUG
-    plants[3][5]->AddPlant(new Card("ShadowPeaShooter"));
+    mainGame->plants[3][5]->AddPlant(new Card("ShadowPeaShooter"));
     //DEBUG
 
     //持续刷新界面
@@ -141,7 +117,23 @@ MainGame::MainGame()
         this->addItem(card[i]);
         card[i]->setPos(-490, -180 + 120 * i);
     }
-
+    for (int i=0;i<5;++i)
+        for (int j=0;j<9;++j)
+        {
+            plants[i][j]=new Plant();
+            plants[i][j]->row=i;plants[i][j]->column=j;
+            addItem(plants[i][j]);
+            plants[i][j]->setPos(80*j-250,190-i*100);
+            connect(plants[i][j],SIGNAL(missilelaunch(QString,int,int,int)),this,SLOT(missile_construct(QString,int,int,int)));
+            //DEBUG
+            if (j<2)
+                for (int k=1;k<=3;++k)
+                {
+                    plants[i][j]->AddPlant(new Card("PeaShooter"));
+                    qDebug()<<plants[i][j]->name;
+                }
+            //DEBUG
+        }
 }
 
 MainGame::~MainGame()
@@ -167,10 +159,3 @@ void MainGame::mousePressEvent(QGraphicsSceneMouseEvent *event)
 
 }
 
-void MainGame::card_clicked()
-{
-    if(waiting)
-        return;
-    else
-        waiting = true;
-}

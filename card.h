@@ -11,9 +11,14 @@ public:
     QRectF boundingRect() const Q_DECL_OVERRIDE;
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
                QWidget *widget) Q_DECL_OVERRIDE;
-    void mousePressEvent();
+    void clicked();
+
     QString name;
-    int cost;
+    int cost,number;
+    bool is_clicked;
+
+signals:
+    void card_clicked(int n);
 };
 
 #endif // CARD_H
