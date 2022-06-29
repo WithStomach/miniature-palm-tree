@@ -16,15 +16,17 @@
 #include <QPainter>
 #include <QDebug>
 #include <QTimer>
+#include <QTime>
+#include <QtGlobal>
 
-const int Plant::level_limit[5]={1,3,9,18,36};
+const int Plant::level_limit[6]={1,3,9,16,25,25};
 QMap<QString, int> Plant::HPInfo={
     std::map<QString,int>::value_type("PeaShooter",300),
     std::map<QString,int>::value_type("SunFlower",300)
 };
 QMap<QString, int> Plant::CooldownInfo={
-    std::map<QString,int>::value_type("PeaShooter",1000),
-    std::map<QString,int>::value_type("SunFlower",7500)
+    std::map<QString,int>::value_type("PeaShooter",1800),
+    std::map<QString,int>::value_type("SunFlower",15000)
 };
 
 Card::Card(QString _name=""):QObject(), name(_name){
@@ -95,7 +97,10 @@ bool Plant::AddPlant(Card *card){
                 return false;
             ++XP;
             if (XP>=(Plant::level_limit[level]))
+            {
                 ++level;
+                HP=HPInfo[name];
+            }
             return true;
         }
     }
@@ -115,6 +120,19 @@ void Plant::movement(){
         if (Zombie::rowNum[row])
         {
             missilelaunch("Pea",row,column);
+            if (level>1)
+            {
+                qsrand(QTime(0,0,0).secsTo(QTime::currentTime()));
+                int rand=qrand()%(6-level);
+                if (!rand)
+                    missilelaunch("PiercingPea",row,column);
+                if (level==5)
+                {
+                    int rand2=qrand()%2;
+                    if (!rand2)
+                        missilelaunch("PiercingPea",row,column);
+                }
+            }
             return ;
         }
     }

@@ -78,7 +78,9 @@ void GameScene::game_start()
             plants[i][j]->setPos(80*j-250,190-i*100);
             connect(plants[i][j],SIGNAL(missilelaunch(QString,int,int)),this,SLOT(missile_construct(QString,int,int)));
             //DEBUG
-            plants[i][j]->AddPlant(new Card("PeaShooter"));
+            if (j<2)
+                for (int k=1;k<=3;++k)
+                    plants[i][j]->AddPlant(new Card("PeaShooter"));
             //DEBUG
         }
 

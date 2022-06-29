@@ -10,11 +10,14 @@
 #include <QList>
 
 QMap<QString, int> Missile::DamageInfo={
-    std::map<QString,int>::value_type("Pea",20)
+    std::map<QString,int>::value_type("Pea",20),
+    std::map<QString,int>::value_type("PiercingPea",10),
+    std::map<QString,int>::value_type("ShadowPea",30),
+    std::map<QString,int>::value_type("PiercingShadowPea",30),
 };
 
 Missile::Missile(QString _name):QObject(),name(_name){
-    damage=2;
+    damage=DamageInfo[_name];
     speed=50;
 };
 
@@ -34,12 +37,20 @@ void Missile::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget
 void GameScene::missile_construct(QString missilename,int row,int column){
     Missile *missile=new Missile(missilename);
     mainGame->addItem(missile);
-    missile->setPos(80*column-170,190-row*100);
+    int delay=0;
+    if (missilename=="PiercingPea")
+        delay=10;
+    missile->setPos(80*column-170-delay,190-row*100);
 }
 
 void Missile::advance(int step=1){
     if(!step)
         return;
+    if (this->x()>=600)
+    {
+        delete this;
+        return ;
+    }
     bool e = true;
     const char* n = typeid(Zombie).name();
     QList<QGraphicsItem*> dd = this->scene()->collidingItems(this, Qt::IntersectsItemBoundingRect);
@@ -52,16 +63,17 @@ void Missile::advance(int step=1){
                 break;
         }
     }
-    if(e)
-        setPos(mapToParent(speed, 0));
-    else{
+    if(!e)
         hit((Zombie*)(*it));
-    }
+    if (e||(this->name.contains("Piercing")))
+        setPos(mapToParent(speed, 0));
 }
 
 void Missile::hit(Zombie *target){
     target->HP -= damage;
     if (target->HP<=0 && target->mode != "dead")
         target->dead();
-    delete this;
+    if (!(this->name.contains("Piercing")))
+        delete this;
+    return ;
 }

@@ -27,7 +27,7 @@ public:
     QString name;
     static QMap<QString, int> HPInfo;
     int HP;
-    static const int level_limit[5];
+    static const int level_limit[6];
     int XP,level;
     static QMap<QString, int> CooldownInfo;
     int cooldown;
