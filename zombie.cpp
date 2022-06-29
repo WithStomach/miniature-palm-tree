@@ -167,7 +167,7 @@ void Zombie::advance(int s = 1){
         if(poison_time == 0)
             speed *= 2;
     }
-    if(this->x() < 200){
+    if(this->x() < -300){
         emit zombie_victory();
         return;
     }

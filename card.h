@@ -11,7 +11,7 @@ public:
     QRectF boundingRect() const Q_DECL_OVERRIDE;
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
                QWidget *widget) Q_DECL_OVERRIDE;
-
+    void mousePressEvent();
     QString name;
     int cost;
 };

@@ -15,8 +15,24 @@
 #include <QGraphicsView>
 #include <QString>
 #include <QTimer>
+#include "card.h"
+
 
 static QString const mapPath = ":/pic/background.png";
+
+class MainGame:public QGraphicsScene
+{
+    Q_OBJECT
+public:
+    static QString cardName[5];
+    MainGame();
+    ~MainGame();
+    Card* card[3];//商店中3张卡牌
+    bool waiting; // 是否正在等待二次点击种植植物
+    void mousePressEvent(QGraphicsSceneMouseEvent*);
+public slots:
+    void card_clicked();
+};
 
 class GameScene : public QWidget
 {
@@ -33,19 +49,12 @@ public slots:
 public:
     static QString zombieName[4];
     QTimer* update_t;
-    QGraphicsScene* mainGame;
+    MainGame* mainGame;
     QGraphicsView* gameMap;
     bool is_going;
 signals:
     void back();
 };
 
-class MainGame:public QGraphicsScene
-{
-    Q_OBJECT
-public:
-    MainGame();
-    ~MainGame();
-    void mousePressEvent(QGraphicsSceneMouseEvent*);
-};
+
 #endif // GAMESCENE_H

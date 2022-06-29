@@ -15,7 +15,9 @@
 #include <QMouseEvent>
 
 
+
 QString GameScene::zombieName[4] = {"normal", "block", "paper", "football"};
+QString MainGame::cardName[5] = {};
 
 GameScene::GameScene(QWidget *parent) : QWidget(parent)
 {
@@ -25,10 +27,7 @@ GameScene::GameScene(QWidget *parent) : QWidget(parent)
 
     this->setFixedSize(mainWidth, mainHeight);
 
-    mainGame = new QGraphicsScene;
-    mainGame->setItemIndexMethod(QGraphicsScene::NoIndex);
-    mainGame->setSceneRect(-0.5 * mainWidth, -0.5 * mainHeight,
-                           mainWidth, mainHeight);
+    mainGame = new MainGame;
     update_t = new QTimer();
     connect(update_t, SIGNAL(timeout()), mainGame, SLOT(advance()));
 
@@ -128,6 +127,20 @@ void GameScene::lose()
 
 MainGame::MainGame()
 {
+    this->setItemIndexMethod(QGraphicsScene::NoIndex);
+    this->setSceneRect(-0.5 * mainWidth, -0.5 * mainHeight,
+                           mainWidth, mainHeight);
+    waiting = false;
+    //初始化卡牌列表，必有一张向日葵
+    card[0] = new Card("sunflower");
+    qsrand(QTime(0, 0, 0).secsTo(QTime::currentTime()));
+    this->addItem(card[0]);
+    card[0]->setPos(-490, -180);
+    for(int i = 1; i < 3; i++){
+        card[i] = new Card(cardName[qrand() % 5]);
+        this->addItem(card[i]);
+        card[i]->setPos(-490, -180 + 120 * i);
+    }
 
 }
 
@@ -140,9 +153,24 @@ void MainGame::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
     if(event->button() == Qt::LeftButton){
         int x = event->pos().x(), y = event->pos().y();
-        if(x >= 5 && x <= 200){
-            int index = y / 100;
-            index--;
+        // 若点击刷新按钮, 且此时不处于等待状态，商店刷新
+        if(!waiting && x >= -490 && y >= -290 && y <= -210 && x <= -290){
+            qsrand(QTime(0, 0, 0).secsTo(QTime::currentTime()));
+            //每张卡牌随机变为其他种类的卡牌
+            for(int i = 0; i < 3; i++){
+                card[i] = new Card(cardName[qrand() % 5]);
+                this->addItem(card[i]);
+                card[i]->setPos(-490, -180 + 120 * i);
+            }
         }
     }
+
+}
+
+void MainGame::card_clicked()
+{
+    if(waiting)
+        return;
+    else
+        waiting = true;
 }
