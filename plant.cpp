@@ -50,7 +50,7 @@ QRectF Plant::boundingRect() const{
 
 
 void Plant::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *){
-    setZValue(0);
+    setZValue(1);
     QImage pic(":/pic/" + name + ".png");
     pic = pic.scaled(70, 70);
     painter->drawImage(0, 0, pic);
@@ -76,6 +76,11 @@ void Plant::advance(int step=1){
     stage%=cooldown;
     if (stage==0)
         movement();
+}
+
+void Plant::mousePressEvent(QGraphicsSceneMouseEvent *)
+{
+    qDebug() << "%%%";
 }
 
 bool Plant::AddPlant(Card *card){
@@ -146,10 +151,6 @@ void Plant::movement(){
         }
     }
     return ;
-}
-
-void Plant::clicked(){
-    plant_clicked(row,column);
 }
 
 void MainGame::plant_clicked(int row,int column){

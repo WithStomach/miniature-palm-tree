@@ -106,22 +106,30 @@ MainGame::MainGame()
     this->setItemIndexMethod(QGraphicsScene::NoIndex);
     this->setSceneRect(-0.5 * mainWidth, -0.5 * mainHeight,
                            mainWidth, mainHeight);
-    waiting = false;
+    waiting = 0;
+
     //初始化卡牌列表，必有一张向日葵
-    card[0] = new Card("sunflower");
+    card[0] = new Card("PeaShooter");
     qsrand(QTime(0, 0, 0).secsTo(QTime::currentTime()));
     this->addItem(card[0]);
+    card[0]->number = 1;
     card[0]->setPos(-490, -180);
+    connect(card[0], &Card::card_clicked, this, &MainGame::card_clicked);
     for(int i = 1; i < 3; i++){
-        card[i] = new Card(cardName[qrand() % 5]);
+        card[i] = new Card("PeaShooter");
+        card[i]->number = i + 1;
         this->addItem(card[i]);
         card[i]->setPos(-490, -180 + 120 * i);
+        connect(card[i], &Card::card_clicked, this, &MainGame::card_clicked);
     }
+
+    //初始化植物
     for (int i=0;i<5;++i)
         for (int j=0;j<9;++j)
         {
             plants[i][j]=new Plant();
-            plants[i][j]->row=i;plants[i][j]->column=j;
+            plants[i][j]->row=i;
+            plants[i][j]->column=j;
             addItem(plants[i][j]);
             plants[i][j]->setPos(80*j-250,190-i*100);
             connect(plants[i][j],SIGNAL(missilelaunch(QString,int,int,int)),this,SLOT(missile_construct(QString,int,int,int)));
@@ -143,11 +151,14 @@ MainGame::~MainGame()
 
 void MainGame::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
+    qDebug() << "!!!";
     if(event->button() == Qt::LeftButton){
-        int x = event->pos().x(), y = event->pos().y();
+        int x = event->scenePos().x(), y = event->scenePos().y();
+        qDebug() << x << " " << y;
         // 若点击刷新按钮, 且此时不处于等待状态，商店刷新
-        if(!waiting && x >= -490 && y >= -290 && y <= -210 && x <= -290){
+        if(!waiting && x >= -490 && y >= -290 && x <= -290 && y <= -210){
             qsrand(QTime(0, 0, 0).secsTo(QTime::currentTime()));
+            qDebug() << "???";
             //每张卡牌随机变为其他种类的卡牌
             for(int i = 0; i < 3; i++){
                 card[i] = new Card(cardName[qrand() % 5]);
@@ -155,7 +166,26 @@ void MainGame::mousePressEvent(QGraphicsSceneMouseEvent *event)
                 card[i]->setPos(-490, -180 + 120 * i);
             }
         }
+        //点击地图区域种下植物
+        else if(waiting && x >= -170 && x <= 470 && y >= -310 && y <= 190){
+            int c = (x + 250) / 80, r = (190 - y) / 100;
+            qDebug() << r << " " << c;
+            bool e = plants[r][c]->AddPlant(card[waiting - 1]);
+            //种下植物后卡牌消失
+            if(e){
+                if(cd[waiting - 1]){
+                    delete card[waiting - 1];
+                    card[waiting - 1] = NULL;
+                    cd[waiting - 1] = false;
+                    waiting = 0;
+                }
+            }
+        }
+        else{
+            //点击其余区域会导致等待期终止
+            waiting = 0;
+            QGraphicsScene::mousePressEvent(event);
+        }
     }
-
 }
 

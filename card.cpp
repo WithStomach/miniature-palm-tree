@@ -42,9 +42,10 @@ void Card::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *)
     painter->drawImage(0, 0, img);
 }
 
-void Card::clicked(){
-    is_clicked=true;
-    card_clicked(number);
+void Card::mousePressEvent(QGraphicsSceneMouseEvent *)
+{
+    qDebug() << "@@@";
+    emit Card::card_clicked(number);
 }
 
 void MainGame::card_clicked(int n){

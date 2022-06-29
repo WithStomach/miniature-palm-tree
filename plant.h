@@ -13,7 +13,7 @@ public:
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
                QWidget *widget) Q_DECL_OVERRIDE;
     void advance(int step) Q_DECL_OVERRIDE;
-    void clicked();
+    void mousePressEvent(QGraphicsSceneMouseEvent*);
 
     QString name;
     static QMap<QString, int> HPInfo;

@@ -28,6 +28,7 @@ public:
     static QString cardName[5];
     MainGame();
     ~MainGame();
+    bool cd[3]; // 记录商店中的卡牌是否还存在
     Card* card[3];//商店中3张卡牌
     Plant* plants[5][9];
     int waiting; // 是否正在等待二次点击种植植物,0表示不是，非0则表示卡片编号

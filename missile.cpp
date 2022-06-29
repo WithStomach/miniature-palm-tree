@@ -54,7 +54,7 @@ void MainGame::missile_construct(QString missilename,int row,int column,int leve
 void Missile::advance(int step=1){
     if(!step)
         return;
-    if (this->x()>=600)
+    if (this->x()>=400)
     {
         delete this;
         return ;
