@@ -30,6 +30,7 @@ public slots:
     void pause();
     void back_main_menu();
 public:
+    static QString zombieName[4];
     QTimer* update_t;
     QGraphicsScene* mainGame;
     QGraphicsView* gameMap;

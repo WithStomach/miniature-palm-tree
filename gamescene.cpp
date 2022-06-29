@@ -13,6 +13,8 @@
 #include <QDialog>
 
 
+QString GameScene::zombieName[4] = {"normal", "block", "paper", "football"};
+
 GameScene::GameScene(QWidget *parent) : QWidget(parent)
 {
     is_going = true;
