@@ -35,7 +35,6 @@ public:
     void mousePressEvent(QGraphicsSceneMouseEvent*);
 public slots:
     void card_clicked(int n);
-    void plant_clicked(int row,int column);
     void missile_construct(QString missilename,int row,int column,int level);
 };
 

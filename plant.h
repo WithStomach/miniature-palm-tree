@@ -32,7 +32,6 @@ public:
 
 signals:
     void missilelaunch(QString missilename,int row,int column,int level=0);//向mainGame传递子弹信息
-    void plant_clicked(int row,int column);
 public slots:
     void movement();//植物行动
 };

@@ -78,11 +78,6 @@ void Plant::advance(int step=1){
         movement();
 }
 
-void Plant::mousePressEvent(QGraphicsSceneMouseEvent *)
-{
-    qDebug() << "%%%";
-}
-
 bool Plant::AddPlant(Card *card){
     if (name=="Empty"){
         name=card->name;
