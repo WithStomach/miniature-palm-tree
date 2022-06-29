@@ -23,6 +23,7 @@ public:
     QRectF boundingRect() const Q_DECL_OVERRIDE;
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
                QWidget *widget) Q_DECL_OVERRIDE;
+    void advance(int step) Q_DECL_OVERRIDE;
 
     QString name;
     static QMap<QString, int> HPInfo;
@@ -31,7 +32,7 @@ public:
     int XP,level;
     static QMap<QString, int> CooldownInfo;
     int cooldown;
-    QTimer *timer;
+    int stage;
 
     int row,column;
 

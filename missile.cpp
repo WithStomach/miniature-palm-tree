@@ -29,9 +29,10 @@ QRectF Missile::boundingRect() const
 }
 
 void Missile::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *){
-    QImage ii(":/pic/" + name + ".png");
-    ii = ii.scaled(30, 30);
-    painter->drawImage(0, 0, ii);
+    setZValue(20);
+    QImage missile(":/pic/" + name + ".png");
+    missile = missile.scaled(30, 30);
+    painter->drawImage(0, 0, missile);
 }
 
 void GameScene::missile_construct(QString missilename,int row,int column){

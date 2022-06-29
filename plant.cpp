@@ -25,8 +25,8 @@ QMap<QString, int> Plant::HPInfo={
     std::map<QString,int>::value_type("SunFlower",300)
 };
 QMap<QString, int> Plant::CooldownInfo={
-    std::map<QString,int>::value_type("PeaShooter",1800),
-    std::map<QString,int>::value_type("SunFlower",15000)
+    std::map<QString,int>::value_type("PeaShooter",9),
+    std::map<QString,int>::value_type("SunFlower",75)
 };
 
 Card::Card(QString _name=""):QObject(), name(_name){
@@ -51,7 +51,7 @@ Plant::Plant(){
     XP=0;
     level=0;
     cooldown=1000;
-    timer=new QTimer();
+    stage=0;
 }
 
 QRectF Plant::boundingRect() const{
@@ -60,6 +60,7 @@ QRectF Plant::boundingRect() const{
 
 
 void Plant::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *){
+    setZValue(0);
     QImage pic(":/pic/" + name + ".png");
     pic = pic.scaled(70, 70);
     painter->drawImage(0, 0, pic);
@@ -78,6 +79,15 @@ void Plant::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *
     }
 }
 
+void Plant::advance(int step=1){
+    if (!step)
+        return ;
+    ++stage;
+    stage%=cooldown;
+    if (stage==0)
+        movement();
+}
+
 bool Plant::AddPlant(Card *card){
     if (name=="Empty"){
         name=card->name;
@@ -85,8 +95,7 @@ bool Plant::AddPlant(Card *card){
         level=1;
         HP=Plant::HPInfo[card->name];
         cooldown=Plant::CooldownInfo[card->name];
-        QObject::connect(timer, SIGNAL(timeout()), this, SLOT(movement()));
-        timer->start(cooldown);
+        stage=0;
         return true;
     }
     else{
