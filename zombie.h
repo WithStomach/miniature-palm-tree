@@ -22,7 +22,7 @@ public:
     void dead();
     void attack(Plant* p);
     QPainterPath shape()const;
-    void ice(int); // 僵尸减速接口
+    void poison(int time,int level); // 僵尸减速接口
 
     QString name;
     QString mode;//僵尸当前行为模式
@@ -33,7 +33,7 @@ public:
     int stage; // 僵尸的形态
     int step; // 记录当前动作对应的贴图标号
     int mStep; // 行走动作包含的帧数
-    int ice_time; // 僵尸被减速的剩余时间
+    int poison_time,poison_level; // 僵尸被减速的剩余时间和等级
 signals:
     // 僵尸死亡时发出信号
     void death(int i);

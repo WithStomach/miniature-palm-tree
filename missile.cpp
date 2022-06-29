@@ -16,7 +16,9 @@ QMap<QString, int> Missile::DamageInfo={
     std::map<QString,int>::value_type("PiercingShadowPea",30),
 };
 
-Missile::Missile(QString _name):QObject(),name(_name){
+const int poison_time[6]={0,5,8,10,12,18};
+
+Missile::Missile(QString _name,int lvl=0):QObject(),name(_name),level(lvl){
     damage=DamageInfo[_name];
     speed=50;
 };
@@ -31,17 +33,22 @@ QRectF Missile::boundingRect() const
 void Missile::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *){
     setZValue(20);
     QImage missile(":/pic/" + name + ".png");
-    missile = missile.scaled(30, 30);
+    if (this->name.contains("Shadow"))
+        missile = missile.scaled(40, 20);
+    else
+        missile = missile.scaled(30, 30);
     painter->drawImage(0, 0, missile);
 }
 
-void GameScene::missile_construct(QString missilename,int row,int column){
-    Missile *missile=new Missile(missilename);
+void GameScene::missile_construct(QString missilename,int row,int column,int level=0){
+    Missile *missile=new Missile(missilename,level);
     mainGame->addItem(missile);
-    int delay=0;
+    int delay=0,below=0;
     if (missilename=="PiercingPea")
         delay=10;
-    missile->setPos(80*column-170-delay,190-row*100);
+    if (missilename=="ShadowPea")
+        below=20;
+    missile->setPos(80*column-170-delay,190-row*100+below);
 }
 
 void Missile::advance(int step=1){
@@ -74,6 +81,8 @@ void Missile::hit(Zombie *target){
     target->HP -= damage;
     if (target->HP<=0 && target->mode != "dead")
         target->dead();
+    if (this->name.contains("Shadow"))
+        target->poison(poison_time[level],level);
     if (!(this->name.contains("Piercing")))
         delete this;
     return ;

@@ -11,7 +11,7 @@
 class Missile : public QObject, public QGraphicsItem{
     Q_OBJECT
 public:
-    Missile(QString _name);
+    Missile(QString _name,int lvl);
     ~Missile();
     QRectF boundingRect() const Q_DECL_OVERRIDE;
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
@@ -22,6 +22,7 @@ public:
     static QMap<QString, int> DamageInfo;
     int damage;
     int speed;
+    int level;
 
     void hit(Zombie* target);
 };

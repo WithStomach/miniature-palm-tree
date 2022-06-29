@@ -78,7 +78,7 @@ void GameScene::game_start()
             plants[i][j]->row=i;plants[i][j]->column=j;
             mainGame->addItem(plants[i][j]);
             plants[i][j]->setPos(80*j-250,190-i*100);
-            connect(plants[i][j],SIGNAL(missilelaunch(QString,int,int)),this,SLOT(missile_construct(QString,int,int)));
+            connect(plants[i][j],SIGNAL(missilelaunch(QString,int,int,int)),this,SLOT(missile_construct(QString,int,int,int)));
             //DEBUG
             if (j<2)
                 for (int k=1;k<=3;++k)
@@ -86,9 +86,12 @@ void GameScene::game_start()
             //DEBUG
         }
 
+    //DEBUG
+    plants[3][5]->AddPlant(new Card("ShadowPeaShooter"));
+    //DEBUG
 
     //持续刷新界面
-    update_t->start(200);
+    update_t->start(100);
 }
 
 void GameScene::pause(){

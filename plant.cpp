@@ -1,5 +1,9 @@
 #include "plant.h"
 
+#ifndef CARD_H
+#include "card.h"
+#endif
+
 #ifndef MISSILE_H
 #include "missile.h"
 #endif
@@ -22,28 +26,14 @@
 const int Plant::level_limit[6]={1,3,9,16,25,25};
 QMap<QString, int> Plant::HPInfo={
     std::map<QString,int>::value_type("PeaShooter",300),
+    std::map<QString,int>::value_type("ShadowPeaShooter",300),
     std::map<QString,int>::value_type("SunFlower",300)
 };
 QMap<QString, int> Plant::CooldownInfo={
     std::map<QString,int>::value_type("PeaShooter",9),
+    std::map<QString,int>::value_type("ShadowPeaShooter",12),
     std::map<QString,int>::value_type("SunFlower",75)
 };
-
-Card::Card(QString _name=""):QObject(), name(_name){
-}
-
-Card::~Card(){}
-
-QRectF Card::boundingRect() const{
-    return QRectF(0, 0, 70, 200);
-}
-
-void Card::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *){
-    QImage ii(":/pic/" + name + "Card.png");
-    ii = ii.scaled(70, 200);
-    painter->drawImage(0, 0, ii);
-}
-
 
 Plant::Plant(){
     name="Empty";
@@ -142,6 +132,16 @@ void Plant::movement(){
                         missilelaunch("PiercingPea",row,column);
                 }
             }
+            return ;
+        }
+    }
+    if (name=="ShadowPeaShooter"){
+        if (Zombie::rowNum[row])
+        {
+            if (level<5)
+                missilelaunch("ShadowPea",row,column,level);
+            else
+                missilelaunch("PiercingShadowPea",row,column,5);
             return ;
         }
     }

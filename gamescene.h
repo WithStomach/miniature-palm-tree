@@ -26,7 +26,7 @@ public:
     void game_start();
 public slots:
     void zombie_construct(int last_row);
-    void missile_construct(QString missilename,int row,int column);
+    void missile_construct(QString missilename,int row,int column,int level);
     void pause();
     void back_main_menu();
 public:

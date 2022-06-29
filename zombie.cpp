@@ -20,9 +20,9 @@ int Zombie::zombieNum = 0;
 int Zombie::rowNum[5] = {0, 0, 0, 0, 0};
 //僵尸生命值
 QMap<QString, int> Zombie::HPInfo = {
-    std::map<QString, int>::value_type("normal", 100),
+    std::map<QString, int>::value_type("normal", 200),
     std::map<QString, int>::value_type("block", 100),
-    std::map<QString, int>::value_type("paper", 100),
+    std::map<QString, int>::value_type("paper", 200),
     std::map<QString, int>::value_type("football", 300)
 };
 //攻击力
@@ -143,10 +143,28 @@ void Zombie::advance(int s = 1){
             attack((Plant*)(*it));
     }
     //若处于减速状态，减速时间减少
-    if(ice_time > 0){
-        ice_time--;
+    if(poison_time > 0){
+        poison_time--;
         //脱离减速状态后速度恢复
-        if(ice_time == 0)
+        switch (poison_level)
+        {
+            case 2:
+                HP-=2;
+            break;
+            case 3:
+                HP-=3;
+            break;
+            case 4:
+                HP-=0.02*HPInfo[name]+3;
+            break;
+            case 5:
+                HP-=0.04*HPInfo[name]+3;
+            break;
+        }
+        if (HP<=0)
+            this->dead();
+        //结算伤害
+        if(poison_time == 0)
             speed *= 2;
     }
 }
@@ -202,11 +220,13 @@ QPainterPath Zombie::shape() const
     return path;
 }
 
-void Zombie::ice(int time)
+void Zombie::poison(int time,int level)
 {
-    if(ice_time == 0)
+    if(poison_time == 0)
         speed /= 2;
-    ice_time = time;
+    poison_time = time;
+    if (poison_level<level)
+        poison_level=level;
 }
 
 void GameScene::zombie_construct(int last_row)
@@ -229,22 +249,17 @@ void GameScene::zombie_construct(int last_row)
     if(Zombie::zombieNum <= 20){
         int cnt = qrand() % 3 + 1;//每次出现1 ~ 3只僵尸
         int lr = -1;
-        qDebug() << cnt;
         for(int i = 0; i < cnt; i++){
-            qDebug() << i;
            int _r = qrand() % 5;
            if(_r == lr)
                _r = (_r + 1) % 5;
            lr = _r;
            int _k = qrand() % 3;
            Zombie* newZombie = new Zombie(zombieName[_k], _r);
-           qDebug() << zombieName[_k];
            mainGame->addItem(newZombie);
            newZombie->setPos(500, 270 - Zombie::Hei[newZombie->name] - _r * 100);
-           qDebug() << "???";
            if(i == cnt - 1)
                connect(newZombie, &Zombie::death, this, &zombie_construct, Qt::QueuedConnection);
-            qDebug() << "!!!";
         }
     }
     //一大波僵尸

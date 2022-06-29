@@ -3,18 +3,7 @@
 
 #include <QGraphicsItem>
 
-class Card : public QObject, public QGraphicsItem{
-    Q_OBJECT
-public:
-    Card(QString _name);
-    ~Card();
-    QRectF boundingRect() const Q_DECL_OVERRIDE;
-    void paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
-               QWidget *widget) Q_DECL_OVERRIDE;
-
-    QString name;
-    int cost;
-};
+#include "card.h"
 
 class Plant : public QObject, public QGraphicsItem{
     Q_OBJECT
@@ -41,7 +30,7 @@ public:
 
 
 signals:
-    void missilelaunch(QString missilename,int row,int column);//向mainGame传递子弹信息
+    void missilelaunch(QString missilename,int row,int column,int level=0);//向mainGame传递子弹信息
 public slots:
     void movement();//植物行动
 };
