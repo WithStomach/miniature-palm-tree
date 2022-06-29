@@ -33,11 +33,6 @@ MainMenu::MainMenu(QWidget *parent) :
     exitButton->move(550, 300);
     connect(exitButton, &QPushButton::clicked, this, &exit);
 
-    //进入存档界面按键
-    width = 300, height = 150;
-    OptionButton* saveloadButton = new OptionButton(width, height, "save");
-    saveloadButton->setParent(this);
-    saveloadButton->move(530, 200);
     //成就（？）
 
 
