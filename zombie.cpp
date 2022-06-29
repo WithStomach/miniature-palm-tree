@@ -213,7 +213,7 @@ void GameScene::zombie_construct(int last_row)
 {
     qsrand(QTime(0, 0, 0).secsTo(QTime::currentTime()));
     //生成僵尸数量少于4只时，每次只会出现一只普通僵尸
-    /*if(Zombie::zombieNum <= 4){
+    if(Zombie::zombieNum <= 4){
         //随机决定下一只僵尸生成的行
         int _r = qrand() % 5;
         //若与上一只在相同行，则生成在下一行
@@ -224,7 +224,7 @@ void GameScene::zombie_construct(int last_row)
         newZombie->setPos(500, 270 - Zombie::Hei[newZombie->name] - _r * 100);
         //newZombie->setPos(500, 200);
         connect(newZombie, &Zombie::death, this, &zombie_construct);
-    }*/
+    }
     //第二阶段会出现较强的僵尸，且数量更多
     if(Zombie::zombieNum <= 20){
         int cnt = qrand() % 3 + 1;//每次出现1 ~ 3只僵尸
