@@ -37,6 +37,7 @@ public:
 signals:
     // 僵尸死亡时发出信号
     void death(int i);
+    void zombie_victory();
 };
 
 #endif // ZOMBIE_H

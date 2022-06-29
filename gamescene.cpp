@@ -11,6 +11,8 @@
 #include <QTime>
 #include "missile.h"
 #include <QDialog>
+#include <QGraphicsSceneMouseEvent>
+#include <QMouseEvent>
 
 
 QString GameScene::zombieName[4] = {"normal", "block", "paper", "football"};
@@ -100,7 +102,7 @@ void GameScene::pause(){
        update_t->stop();
    }
    else{
-       update_t->start(200);
+       update_t->start(100);
        is_going = true;
    }
 }
@@ -110,4 +112,37 @@ void GameScene::back_main_menu()
     this->gameMap->close();
     emit back();
     delete this;
+}
+
+void GameScene::lose()
+{
+    update_t->stop();
+    QDialog* l = new QDialog(this);
+    l->setWindowFlags(Qt::FramelessWindowHint | Qt::Dialog);
+    l->setStyleSheet("background-image:url(:/pic/lose.png);");
+    l->setFixedSize(564, 468);
+    l->setModal(true);
+    l->move(600, 400);
+    l->show();
+}
+
+MainGame::MainGame()
+{
+
+}
+
+MainGame::~MainGame()
+{
+
+}
+
+void MainGame::mousePressEvent(QGraphicsSceneMouseEvent *event)
+{
+    if(event->button() == Qt::LeftButton){
+        int x = event->pos().x(), y = event->pos().y();
+        if(x >= 5 && x <= 200){
+            int index = y / 100;
+            index--;
+        }
+    }
 }

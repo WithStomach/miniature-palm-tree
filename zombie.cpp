@@ -34,10 +34,10 @@ QMap<QString, int> Zombie::ATKInfo = {
 };
 //速度
 QMap<QString, int> Zombie::SpeedInfo = {
-    std::map<QString, int>::value_type("normal", 4),
-    std::map<QString, int>::value_type("block", 4),
-    std::map<QString, int>::value_type("paper", 4),
-    std::map<QString, int>::value_type("football", 10)
+    std::map<QString, int>::value_type("normal", 2),
+    std::map<QString, int>::value_type("block", 2),
+    std::map<QString, int>::value_type("paper", 2),
+    std::map<QString, int>::value_type("football", 6)
 };
 //贴图高度
 QMap<QString, int> Zombie::Hei = {
@@ -167,6 +167,10 @@ void Zombie::advance(int s = 1){
         if(poison_time == 0)
             speed *= 2;
     }
+    if(this->x() < 200){
+        emit zombie_victory();
+        return;
+    }
 }
 
 void Zombie::dead()
@@ -239,11 +243,12 @@ void GameScene::zombie_construct(int last_row)
         //若与上一只在相同行，则生成在下一行
         if(_r == last_row)
             _r = (_r + 1) % 5;
-        Zombie* newZombie = new Zombie(QString("normal"), _r);
+        Zombie* newZombie = new Zombie(QString("football"), _r);
         mainGame->addItem(newZombie);
         newZombie->setPos(500, 270 - Zombie::Hei[newZombie->name] - _r * 100);
         //newZombie->setPos(500, 200);
         connect(newZombie, &Zombie::death, this, &zombie_construct);
+        connect(newZombie, &Zombie::zombie_victory, this, &lose);
     }
     //第二阶段会出现较强的僵尸，且数量更多
     if(Zombie::zombieNum <= 20){

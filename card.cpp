@@ -25,6 +25,7 @@
 #include <QtGlobal>
 
 Card::Card(QString _name=""):QObject(), name(_name){
+
 }
 
 Card::~Card(){}

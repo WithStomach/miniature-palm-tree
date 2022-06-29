@@ -16,7 +16,7 @@
 #include <QString>
 #include <QTimer>
 
-static QString const mapPath = ":/pic/background.jpg";
+static QString const mapPath = ":/pic/background.png";
 
 class GameScene : public QWidget
 {
@@ -29,6 +29,7 @@ public slots:
     void missile_construct(QString missilename,int row,int column,int level);
     void pause();
     void back_main_menu();
+    void lose();
 public:
     static QString zombieName[4];
     QTimer* update_t;
@@ -39,4 +40,12 @@ signals:
     void back();
 };
 
+class MainGame:public QGraphicsScene
+{
+    Q_OBJECT
+public:
+    MainGame();
+    ~MainGame();
+    void mousePressEvent(QGraphicsSceneMouseEvent*);
+};
 #endif // GAMESCENE_H
