@@ -17,7 +17,7 @@
 #include "shadow.h"
 
 QString GameScene::zombieName[4] = {"normal", "block", "paper", "football"};
-QString MainGame::cardName[5] = {"PeaShooter", "SunFlower", "ShadowPeaShooter"};
+QString MainGame::cardName[5] = {"PeaShooter", "SunFlower", "ShadowPeaShooter","Wallnut"};
 
 GameScene::GameScene(QWidget *parent) : QWidget(parent)
 {
@@ -66,7 +66,7 @@ void GameScene::game_start()
     zombie_construct(-1);
 
     //DEBUG
-    //mainGame->plants[3][5]->AddPlant(new Card("ShadowPeaShooter"));
+    mainGame->plants[3][5]->AddPlant(new Card("ShadowPeaShooter"));
     //DEBUG
 
     //持续刷新界面
@@ -121,14 +121,9 @@ MainGame::MainGame()
     this->setSceneRect(-0.5 * mainWidth, -0.5 * mainHeight,
                            mainWidth, mainHeight);
     waiting = 0;
-    //安装阳光模块
     sp = new SunPlayer();
     addItem(sp);
     sp->setPos(-440, 200);
-    //安装阴影计时器
-    shadow_player = new ShadowPlayer();
-    addItem(shadow_player);
-    shadow_player->setPos(0, -280);
 
     //初始化卡牌列表，必有一张向日葵
     card[0] = new Card("SunFlower");
@@ -168,14 +163,14 @@ MainGame::MainGame()
                 connect(plants[i][j],SIGNAL(sun_produce(int)),this,SLOT(get_sun(int)));
             }
             //DEBUG
-            /*if (j<2)
+            if (j<2)
                 for (int k=1;k<=3;++k)
                 {
                     if(j == 0)
                         continue;
                     plants[i][j]->AddPlant(new Card("PeaShooter"));
                     qDebug()<<plants[i][j]->name;
-                }*/
+                }
             //DEBUG
         }
 
@@ -208,7 +203,7 @@ void MainGame::mousePressEvent(QGraphicsSceneMouseEvent *event)
                         cd[i] = false;
                     }
 
-                    card[i] = new Card(cardName[qrand() % 3]);
+                    card[i] = new Card(cardName[qrand() % 4]);
                     card[i]->number = i + 1;
                     cd[i] = true;
                     this->addItem(card[i]);
