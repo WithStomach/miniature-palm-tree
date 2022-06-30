@@ -36,7 +36,6 @@ public:
     Plant* plants[5][9];
     int waiting; // 是否正在等待二次点击种植植物,0表示不是，非0则表示卡片编号
     SunPlayer* sp; // 阳光显示模块
-    ShadowPlayer* shadow_player; // 阴影刷新倒计时显示器
     void mousePressEvent(QGraphicsSceneMouseEvent*);
 public slots:
     bool get_sun(int);

@@ -27,12 +27,14 @@ const int Plant::level_limit[6]={1,3,9,16,25,25};
 QMap<QString, int> Plant::HPInfo={
     std::map<QString,int>::value_type("PeaShooter",300),
     std::map<QString,int>::value_type("ShadowPeaShooter",300),
-    std::map<QString,int>::value_type("SunFlower",300)
+    std::map<QString,int>::value_type("SunFlower",300),
+    std::map<QString,int>::value_type("Wallnut",1200)
 };
 QMap<QString, int> Plant::CooldownInfo={
     std::map<QString,int>::value_type("PeaShooter",9),
     std::map<QString,int>::value_type("ShadowPeaShooter",12),
-    std::map<QString,int>::value_type("SunFlower",75)
+    std::map<QString,int>::value_type("SunFlower",75),
+    std::map<QString,int>::value_type("Wallnut",100)
 };
 
 Plant::Plant(){
@@ -58,6 +60,16 @@ void Plant::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *
         pic = pic.scaled(70, 70);
         painter->drawImage(0, 0, pic);
     }
+    else if (name=="Wallnut"&&HP>HPInfo[name]){
+        QImage pic(":/pic/Wallnut_Shielded.png");
+        pic = pic.scaled(70, 70);
+        painter->drawImage(0, 0, pic);
+    }
+    else if (name=="Wallnut"&&stage==0){
+        QImage pic(":/pic/Wallnut_Curing.png");
+        pic = pic.scaled(70, 70);
+        painter->drawImage(0, 0, pic);
+    }
     else if (name=="ShadowPeaShooter"&&in_shadow){
         QImage pic(":/pic/ShadowPeaShooter_Shadowed.png");
         pic = pic.scaled(70, 70);
@@ -73,9 +85,21 @@ void Plant::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *
     {
         QRectF HP_all(0,70,70,5);
         painter->drawRect(HP_all);
-        QImage hp(":/pic/HP.png");
-        hp = hp.scaled((double(HP)/HPInfo[name])*70, 5);
-        painter->drawImage(0,70,hp);
+        if (HP<=HPInfo[name]){
+            QImage hp(":/pic/HP.png");
+            hp = hp.scaled((double(HP)/HPInfo[name])*70, 5);
+            painter->drawImage(0,70,hp);
+        }
+        else{
+            int shieldwidth=int((double(HP-HPInfo[name])/HPInfo[name])*70);
+            QImage shield(":/pic/Shield.png");
+            shield = shield.scaled(shieldwidth, 5);
+            painter->drawImage(0,70,shield);
+            QImage hp(":/pic/HP.png");
+            hp = hp.scaled(70-shieldwidth, 5);
+            painter->drawImage(shieldwidth,70,hp);
+
+        }
         QRectF XP_all(0,75,70,5);
         painter->drawRect(XP_all);
         QImage xp(":/pic/XP.png");
@@ -112,7 +136,7 @@ bool Plant::AddPlant(Card *card){
         level=1;
         HP=Plant::HPInfo[card->name];
         cooldown=Plant::CooldownInfo[card->name];
-        stage=0;
+        stage=1;
         update();
         return true;
     }
@@ -122,11 +146,22 @@ bool Plant::AddPlant(Card *card){
         else{
             if (level==5)
                 return false;
-            ++XP;
-            if (XP>=(Plant::level_limit[level]))
+            if (name=="Wallnut")
             {
-                ++level;
-                HP=HPInfo[name];
+                if (HP<HPInfo[name])
+                    HP=HPInfo[name];
+                else
+                    HP=HPInfo[name]*1.5;
+                stage=1;
+            }
+            else
+            {
+                ++XP;
+                if (XP>=(Plant::level_limit[level]))
+                {
+                    ++level;
+                    HP=HPInfo[name];
+                }
             }
             update();
             return true;
@@ -185,6 +220,14 @@ void Plant::movement(){
     }
     if(name == "SunFlower"){
         emit sun_produce(25*level);
+    }
+    if(name == "Wallnut"){
+        if (HP<HPInfo[name])
+        {
+            HP+=HPInfo[name]/5;
+            if (HP>HPInfo[name])
+                HP=HPInfo[name];
+        }
     }
     return ;
 }
