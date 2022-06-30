@@ -42,6 +42,7 @@ Plant::Plant(){
     level=0;
     cooldown=1000;
     stage=0;
+    in_shadow = false;
 }
 
 QRectF Plant::boundingRect() const{
@@ -50,10 +51,24 @@ QRectF Plant::boundingRect() const{
 
 
 void Plant::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *){
-    setZValue(1);
-    QImage pic(":/pic/" + name + ".png");
-    pic = pic.scaled(70, 70);
-    painter->drawImage(0, 0, pic);
+    setZValue(2);
+    if (name=="SunFlower"&&stage==0)
+    {
+        QImage pic(":/pic/SunFlower_Shine.png");
+        pic = pic.scaled(70, 70);
+        painter->drawImage(0, 0, pic);
+    }
+    else if (name=="ShadowPeaShooter"&&in_shadow){
+        QImage pic(":/pic/ShadowPeaShooter_Shadowed.png");
+        pic = pic.scaled(70, 70);
+        painter->drawImage(0, 0, pic);
+    }
+    else
+    {
+        QImage pic(":/pic/" + name + ".png");
+        pic = pic.scaled(70, 70);
+        painter->drawImage(0, 0, pic);
+    }
     if (name!="Empty")
     {
         QRectF HP_all(0,70,70,5);
@@ -73,7 +88,19 @@ void Plant::advance(int step=1){
     if (!step)
         return ;
     ++stage;
-    stage%=cooldown;
+    stage %= cooldown;
+    if (name=="SunFlower"&&in_shadow)
+        stage=1;
+    if (name=="ShadowPeaShooter"&&!in_shadow)
+    {
+        HP -= HPInfo[name]/100;
+        if (HP<=0)
+        {
+            this->dead();
+            return ;
+        }
+    }
+    update();
     if (stage==0)
         movement();
 }
@@ -86,6 +113,7 @@ bool Plant::AddPlant(Card *card){
         HP=Plant::HPInfo[card->name];
         cooldown=Plant::CooldownInfo[card->name];
         stage=0;
+        update();
         return true;
     }
     else{
@@ -100,6 +128,7 @@ bool Plant::AddPlant(Card *card){
                 ++level;
                 HP=HPInfo[name];
             }
+            update();
             return true;
         }
     }
@@ -112,6 +141,7 @@ void Plant::dead(){
     XP=0;
     level=0;
     cooldown=1000;
+    update();
 }
 
 void Plant::movement(){
@@ -138,6 +168,14 @@ void Plant::movement(){
     if (name=="ShadowPeaShooter"){
         if (Zombie::rowNum[row])
         {
+            if (in_shadow)
+                if (HP<HPInfo[name])
+                {
+                    HP+=HPInfo[name]/50;
+                    if (HP>HPInfo[name])
+                        HP=HPInfo[name];
+                    update();
+                }
             if (level<5)
                 missilelaunch("ShadowPea",row,column,level);
             else
@@ -145,7 +183,15 @@ void Plant::movement(){
             return ;
         }
     }
+    if(name == "SunFlower"){
+        emit sun_produce(25*level);
+    }
     return ;
 }
 
-
+void Plant::shadow_judge(int row,int column){
+    if(in_shadow)
+        return;
+    in_shadow = (this->row == row) && (this->column == column);
+    update();
+}

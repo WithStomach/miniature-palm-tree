@@ -20,7 +20,8 @@ SOURCES += main.cpp\
     plant.cpp \
     missile.cpp \
     card.cpp \
-    sunplayer.cpp
+    sunplayer.cpp \
+    shadow.cpp
 
 HEADERS  += mainmenu.h \
     optionbutton.h \
@@ -29,7 +30,8 @@ HEADERS  += mainmenu.h \
     plant.h \
     missile.h \
     card.h \
-    sunplayer.h
+    sunplayer.h \
+    shadow.h
 
 FORMS    += mainmenu.ui
 

@@ -24,15 +24,18 @@ public:
     int stage;
 
     int row,column;
+    bool in_shadow;
 
     bool AddPlant(Card *card);//用卡片种植
     void dead();//植物死亡
 
 
 signals:
+    void sun_produce(int sun);
     void missilelaunch(QString missilename,int row,int column,int level=0);//向mainGame传递子弹信息
 public slots:
     void movement();//植物行动
+    void shadow_judge(int row,int column);
 };
 
 #endif // PLANT_H

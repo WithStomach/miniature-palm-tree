@@ -11,6 +11,7 @@
 #include "plant.h"
 #include <synchapi.h>
 #include <QSound>
+#include <QImage>
 #include "gamescene.h"
 
 //记录僵尸名字的数组
@@ -20,10 +21,10 @@ int Zombie::zombieNum = 0;
 int Zombie::rowNum[5] = {0, 0, 0, 0, 0};
 //僵尸生命值
 QMap<QString, int> Zombie::HPInfo = {
-    std::map<QString, int>::value_type("normal", 200),
-    std::map<QString, int>::value_type("block", 100),
-    std::map<QString, int>::value_type("paper", 200),
-    std::map<QString, int>::value_type("football", 300)
+    std::map<QString, int>::value_type("normal", 300),
+    std::map<QString, int>::value_type("block", 200),
+    std::map<QString, int>::value_type("paper", 300),
+    std::map<QString, int>::value_type("football", 450)
 };
 //攻击力
 QMap<QString, int> Zombie::ATKInfo = {
@@ -37,7 +38,7 @@ QMap<QString, int> Zombie::SpeedInfo = {
     std::map<QString, int>::value_type("normal", 2),
     std::map<QString, int>::value_type("block", 2),
     std::map<QString, int>::value_type("paper", 2),
-    std::map<QString, int>::value_type("football", 6)
+    std::map<QString, int>::value_type("football", 4)
 };
 //贴图高度
 QMap<QString, int> Zombie::Hei = {
@@ -80,13 +81,18 @@ Zombie::~Zombie()
 QRectF Zombie::boundingRect() const
 {
     int wid = 150;
-    return QRectF(0, 0, wid, Hei[name]);
+    return QRectF(0, 0, wid, Hei[name] + 5);
 }
 
 void Zombie::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *){
     QImage ii(":/Zombie/zombiePic/" + name + "Zombie_" + mode +
               "(" + QString::number(step + 1 + stage) + ").png");
     painter->drawImage(0, Hei[name] - ii.height(), ii);
+    QRectF HP_all(ii.width() / 2 - 35, Hei[name], ii.width() / 2 + 35, 5);
+    painter->drawRect(HP_all);
+    QImage hp(":/pic/zombie_HP.png");
+    hp = hp.scaled((double(HP)/HPInfo[name]) * 70, 5);
+    painter->drawImage(ii.width() / 2 - 35, Hei[name], hp);
 }
 
 void Zombie::advance(int s = 1){
@@ -167,7 +173,7 @@ void Zombie::advance(int s = 1){
         if(poison_time == 0)
             speed *= 2;
     }
-    if(this->x() < -300){
+    if(this->x() < -320){
         emit zombie_victory();
         return;
     }
@@ -243,7 +249,7 @@ void GameScene::zombie_construct(int last_row)
         //若与上一只在相同行，则生成在下一行
         if(_r == last_row)
             _r = (_r + 1) % 5;
-        Zombie* newZombie = new Zombie(QString("football"), _r);
+        Zombie* newZombie = new Zombie(QString("normal"), _r);
         mainGame->addItem(newZombie);
         newZombie->setPos(500, 270 - Zombie::Hei[newZombie->name] - _r * 100);
         //newZombie->setPos(500, 200);
@@ -251,7 +257,7 @@ void GameScene::zombie_construct(int last_row)
         connect(newZombie, &Zombie::zombie_victory, this, &lose);
     }
     //第二阶段会出现较强的僵尸，且数量更多
-    else if(Zombie::zombieNum <= 0){
+    else if(Zombie::zombieNum <= 20){
         int cnt = qrand() % 3 + 1;//每次出现1 ~ 3只僵尸
         int lr = -1;
         for(int i = 0; i < cnt; i++){
@@ -268,7 +274,7 @@ void GameScene::zombie_construct(int last_row)
         }
     }
     //一大波僵尸
-    else if (Zombie::zombieNum <= 0){
+    else if (Zombie::zombieNum <= 50){
         int cnt = qrand() % 6 + 1;//每次出现1 ~ 6只僵尸
         int lr = -1;
         for(int i = 0; i < cnt; i++){

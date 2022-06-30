@@ -22,6 +22,14 @@
         <file>pic/PeaShooterCard.png</file>
         <file>pic/victory.png</file>
         <file>pic/Sun.png</file>
+        <file>pic/zombie_HP.png</file>
+        <file>pic/shadow.png</file>
+        <file>pic/SunFlower.png</file>
+        <file>pic/SunFlowerCard.png</file>
+        <file>pic/ShadowPeaShooterCard.png</file>
+        <file>pic/cover.png</file>
+        <file>pic/ShadowPeaShooter_Shadowed.png</file>
+        <file>pic/SunFlower_Shine.png</file>
     </qresource>
     <qresource prefix="/Zombie">
         <file>zombiePic/normalZombie_move(1).png</file>

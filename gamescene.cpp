@@ -14,15 +14,17 @@
 #include <QDialog>
 #include <QGraphicsSceneMouseEvent>
 #include <QMouseEvent>
+#include "shadow.h"
 
 QString GameScene::zombieName[4] = {"normal", "block", "paper", "football"};
-QString MainGame::cardName[5] = {};
+QString MainGame::cardName[5] = {"PeaShooter", "SunFlower", "ShadowPeaShooter"};
 
 GameScene::GameScene(QWidget *parent) : QWidget(parent)
 {
     is_going = true;
     for(int i = 0; i < 5; i++)
        Zombie::rowNum[i] = 0;
+    Zombie::zombieNum = 0;
 
     this->setFixedSize(mainWidth, mainHeight);
 
@@ -124,42 +126,58 @@ MainGame::MainGame()
     sp->setPos(-440, 200);
 
     //初始化卡牌列表，必有一张向日葵
-    card[0] = new Card("PeaShooter");
+    card[0] = new Card("SunFlower");
     qsrand(QTime(0, 0, 0).secsTo(QTime::currentTime()));
     this->addItem(card[0]);
     card[0]->number = 1;
     card[0]->setPos(-490, -180);
-    cd[0] = 1;
+    cd[0] = true;
     connect(card[0], &Card::card_clicked, this, &MainGame::card_clicked);
     for(int i = 1; i < 3; i++){
         card[i] = new Card("PeaShooter");
         card[i]->number = i + 1;
         this->addItem(card[i]);
         card[i]->setPos(-490, -180 + 120 * i);
-        cd[i] = 1;
+        cd[i] = true;
         connect(card[i], &Card::card_clicked, this, &MainGame::card_clicked);
     }
 
 
+    //初始化阴影
+    for(int i = 0; i < 3; i++){
+        s[i] = new Shadow();
+        addItem(s[i]);
+    }
     //初始化植物
     for (int i=0;i<5;++i)
         for (int j=0;j<9;++j)
         {
             plants[i][j]=new Plant();
-            plants[i][j]->row=i;
-            plants[i][j]->column=j;
+            plants[i][j]->row = i;
+            plants[i][j]->column = j;
             addItem(plants[i][j]);
-            plants[i][j]->setPos(80*j-250,190-i*100);
+            plants[i][j]->setPos(80 * j - 250, 190 - i * 100);
             connect(plants[i][j],SIGNAL(missilelaunch(QString,int,int,int)),this,SLOT(missile_construct(QString,int,int,int)));
+            for(int k = 0; k < 3; k++){
+                connect(s[k], &Shadow::shadow_cover, plants[i][j], &Plant::shadow_judge);
+                connect(plants[i][j],SIGNAL(sun_produce(int)),this,SLOT(get_sun(int)));
+            }
             //DEBUG
             if (j<2)
                 for (int k=1;k<=3;++k)
                 {
+                    if(j == 0)
+                        continue;
                     plants[i][j]->AddPlant(new Card("PeaShooter"));
                     qDebug()<<plants[i][j]->name;
                 }
             //DEBUG
         }
+
+    //产生第一批阴影
+    for(int i = 0; i < 3; i++){
+        s[i]->init();
+    }
 }
 
 MainGame::~MainGame()
@@ -169,40 +187,60 @@ MainGame::~MainGame()
 
 void MainGame::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
-    qDebug() << "!!!";
     if(event->button() == Qt::LeftButton){
         int x = event->scenePos().x(), y = event->scenePos().y();
-        qDebug() << x << " " << y;
         // 若点击刷新按钮, 且此时不处于等待状态，商店刷新
         if(!waiting && x >= -490 && y >= -290 && x <= -290 && y <= -210){
-            qsrand(QTime(0, 0, 0).secsTo(QTime::currentTime()));
-            qDebug() << "???";
-            //每张卡牌随机变为其他种类的卡牌
-            for(int i = 0; i < 3; i++){
-                card[i] = new Card(cardName[qrand() % 5]);
-                this->addItem(card[i]);
-                card[i]->setPos(-490, -180 + 120 * i);
+            // 刷新时要花费20阳光
+            if(sp->sun >= 20)
+            {
+                //每张卡牌随机变为其他种类的卡牌
+                for(int i = 0; i < 3; i++){
+                    //如果原卡牌还在，先将其删除
+                    if(cd[i]){
+                        delete card[i];
+                        card[i] = NULL;
+                        cd[i] = false;
+                    }
+
+                    card[i] = new Card(cardName[qrand() % 3]);
+                    card[i]->number = i + 1;
+                    cd[i] = true;
+                    this->addItem(card[i]);
+                    card[i]->setPos(-490, -180 + 120 * i);
+                    connect(card[i], &Card::card_clicked, this, &MainGame::card_clicked);
+                }
+                waiting = 0;
+                get_sun(-20);
+                update();
             }
         }
         //点击地图区域种下植物
-        else if(waiting && x >= -170 && x <= 470 && y >= -310 && y <= 190){
-            int c = (x + 250) / 80, r = (190 - y) / 100;
-            qDebug() << r << " " << c;
-            bool e = plants[r][c]->AddPlant(card[waiting - 1]);
-            //种下植物后卡牌消失
-            if(e){
-                if(cd[waiting - 1]){
-                    delete card[waiting - 1];
-                    card[waiting - 1] = NULL;
-                    cd[waiting - 1] = false;
-                    waiting = 0;
+        else if(waiting && x >= -260 && x <= 470 && y >= -210 && y <= 290){
+            if (sp->sun >= card[waiting-1]->cost){
+                int c = (x + 250) / 80, r = (290 - y) / 100;
+                bool e = plants[r][c]->AddPlant(card[waiting - 1]);
+                //种下植物后卡牌消失
+                if(e){
+                    get_sun(-(card[waiting-1]->cost));
+                    if(cd[waiting - 1]){
+                        delete card[waiting - 1];
+                        card[waiting - 1] = NULL;
+                        cd[waiting - 1] = false;
+                        waiting = 0;
+                    }
+                    update();
                 }
             }
         }
         else{
             //点击其余区域会导致等待期终止
-            waiting = 0;
-            QGraphicsScene::mousePressEvent(event);
+           if(waiting != 0)
+                card[waiting-1]->is_clicked=false;
+           update();
+           waiting = 0;
+           QGraphicsScene::mousePressEvent(event);
+
         }
     }
 }
@@ -217,6 +255,7 @@ bool MainGame::get_sun(int x)
         return false;
     }
     sp->sun = s;
+    update();
     return true;
 }
 

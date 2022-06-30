@@ -8,7 +8,7 @@
 
 SunPlayer::SunPlayer() : QObject()
 {
-    sun = 50;
+    sun = 150;
     sun_timer = 0;
     setZValue(3);
 }
@@ -35,7 +35,7 @@ void SunPlayer::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidg
 
 }
 
-void SunPlayer::advance(int step)
+void SunPlayer::advance(int step = 1)
 {
     if(!step)
         return;

@@ -15,6 +15,7 @@ public:
     void mousePressEvent(QGraphicsSceneMouseEvent*);
 
     QString name;
+    static QMap<QString, int> CostInfo;
     int cost,number;
     bool is_clicked;
 

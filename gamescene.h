@@ -18,6 +18,7 @@
 #include "card.h"
 #include "plant.h"
 #include "sunplayer.h"
+#include "shadow.h"
 
 
 static QString const mapPath = ":/pic/background.png";
@@ -29,14 +30,15 @@ public:
     static QString cardName[5];
     MainGame();
     ~MainGame();
+    Shadow* s[3];// 地图中有三个阴影格，位于后三排
     bool cd[3]; // 记录商店中的卡牌是否还存在
     Card* card[3];//商店中3张卡牌
     Plant* plants[5][9];
     int waiting; // 是否正在等待二次点击种植植物,0表示不是，非0则表示卡片编号
     SunPlayer* sp; // 阳光显示模块
     void mousePressEvent(QGraphicsSceneMouseEvent*);
-    bool get_sun(int);
 public slots:
+    bool get_sun(int);
     void card_clicked(int n);
     void missile_construct(QString missilename,int row,int column,int level);
 };
