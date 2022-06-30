@@ -24,7 +24,9 @@ public:
     int stage;
 
     int row,column;
+    int change;
     bool in_shadow;
+    bool can_change;
 
     bool AddPlant(Card *card);//用卡片种植
     void dead();//植物死亡

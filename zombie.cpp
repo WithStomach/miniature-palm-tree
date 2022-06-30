@@ -173,7 +173,7 @@ void Zombie::advance(int s = 1){
         if(poison_time == 0)
             speed *= 2;
     }
-    if(this->x() < -320){
+    if(this->x() < -300){
         emit zombie_victory();
         return;
     }
@@ -269,6 +269,7 @@ void GameScene::zombie_construct(int last_row)
            Zombie* newZombie = new Zombie(zombieName[_k], _r);
            mainGame->addItem(newZombie);
            newZombie->setPos(500, 270 - Zombie::Hei[newZombie->name] - _r * 100);
+           connect(newZombie, &Zombie::zombie_victory, this, &lose);
            if(i == cnt - 1)
                connect(newZombie, &Zombie::death, this, &zombie_construct, Qt::QueuedConnection);
         }
@@ -286,6 +287,7 @@ void GameScene::zombie_construct(int last_row)
            Zombie* newZombie = new Zombie(zombieName[_k], _r);
            mainGame->addItem(newZombie);
            newZombie->setPos(500, 270 - Zombie::Hei[newZombie->name] - _r * 100);
+           connect(newZombie, &Zombie::zombie_victory, this, &lose);
            if(i == cnt - 1)
                connect(newZombie, &Zombie::death, this, &zombie_construct, Qt::QueuedConnection);
         }

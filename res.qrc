@@ -30,6 +30,10 @@
         <file>pic/cover.png</file>
         <file>pic/ShadowPeaShooter_Shadowed.png</file>
         <file>pic/SunFlower_Shine.png</file>
+        <file>pic/Wallnut.png</file>
+        <file>pic/Wallnut_Curing.png</file>
+        <file>pic/Wallnut_Shielded.png</file>
+        <file>pic/WallnutCard.png</file>
     </qresource>
     <qresource prefix="/Zombie">
         <file>zombiePic/normalZombie_move(1).png</file>

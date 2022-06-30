@@ -16,8 +16,8 @@
 #include <QMouseEvent>
 #include "shadow.h"
 
-QString GameScene::zombieName[4] = {"normal", "block", "paper", "football"};
-QString MainGame::cardName[5] = {"PeaShooter", "SunFlower", "ShadowPeaShooter"};
+QString GameScene::zombieName[4] = {"normal", "block", "football", "paper"};
+QString MainGame::cardName[5] = {"PeaShooter", "SunFlower", "ShadowPeaShooter", "Wallnut"};
 
 GameScene::GameScene(QWidget *parent) : QWidget(parent)
 {
@@ -167,16 +167,6 @@ MainGame::MainGame()
                 connect(s[k], &Shadow::shadow_cover, plants[i][j], &Plant::shadow_judge);
                 connect(plants[i][j],SIGNAL(sun_produce(int)),this,SLOT(get_sun(int)));
             }
-            //DEBUG
-            /*if (j<2)
-                for (int k=1;k<=3;++k)
-                {
-                    if(j == 0)
-                        continue;
-                    plants[i][j]->AddPlant(new Card("PeaShooter"));
-                    qDebug()<<plants[i][j]->name;
-                }*/
-            //DEBUG
         }
 
     //产生第一批阴影
@@ -208,7 +198,7 @@ void MainGame::mousePressEvent(QGraphicsSceneMouseEvent *event)
                         cd[i] = false;
                     }
 
-                    card[i] = new Card(cardName[qrand() % 3]);
+                    card[i] = new Card(cardName[qrand() % 4]);
                     card[i]->number = i + 1;
                     cd[i] = true;
                     this->addItem(card[i]);
@@ -245,7 +235,6 @@ void MainGame::mousePressEvent(QGraphicsSceneMouseEvent *event)
            update();
            waiting = 0;
            QGraphicsScene::mousePressEvent(event);
-
         }
     }
 }

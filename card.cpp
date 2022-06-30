@@ -27,7 +27,8 @@
 QMap<QString, int> Card::CostInfo = {
     std::map<QString, int>::value_type("PeaShooter", 100),
     std::map<QString, int>::value_type("ShadowPeaShooter", 175),
-    std::map<QString, int>::value_type("SunFlower", 50)
+    std::map<QString, int>::value_type("SunFlower", 50),
+    std::map<QString, int>::value_type("Wallnut",75)
 };
 
 Card::Card(QString _name=""):QObject(), name(_name){
@@ -59,12 +60,10 @@ void Card::mousePressEvent(QGraphicsSceneMouseEvent *)
 {
     is_clicked=true;
    update();
-   qDebug() << "???";
    emit Card::card_clicked(number);
 
 }
 
 void MainGame::card_clicked(int n){
     waiting=n;
-    qDebug() << "!!!";
 }

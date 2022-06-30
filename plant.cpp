@@ -27,12 +27,14 @@ const int Plant::level_limit[6]={1,3,9,16,25,25};
 QMap<QString, int> Plant::HPInfo={
     std::map<QString,int>::value_type("PeaShooter",300),
     std::map<QString,int>::value_type("ShadowPeaShooter",300),
-    std::map<QString,int>::value_type("SunFlower",300)
+    std::map<QString,int>::value_type("SunFlower",300),
+    std::map<QString,int>::value_type("Wallnut",3000)
 };
 QMap<QString, int> Plant::CooldownInfo={
     std::map<QString,int>::value_type("PeaShooter",9),
     std::map<QString,int>::value_type("ShadowPeaShooter",12),
-    std::map<QString,int>::value_type("SunFlower",75)
+    std::map<QString,int>::value_type("SunFlower",75),
+    std::map<QString,int>::value_type("Wallnut",100)
 };
 
 Plant::Plant(){
@@ -42,7 +44,9 @@ Plant::Plant(){
     level=0;
     cooldown=1000;
     stage=0;
+    change = 0;
     in_shadow = false;
+    can_change = true;
 }
 
 QRectF Plant::boundingRect() const{
@@ -55,6 +59,16 @@ void Plant::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *
     if (name=="SunFlower"&&stage==0)
     {
         QImage pic(":/pic/SunFlower_Shine.png");
+        pic = pic.scaled(70, 70);
+        painter->drawImage(0, 0, pic);
+    }
+    else if (name=="Wallnut"&&HP>HPInfo[name]){
+       QImage pic(":/pic/Wallnut_Shielded.png");
+       pic = pic.scaled(70, 70);
+       painter->drawImage(0, 0, pic);
+   }
+    else if (name=="Wallnut"&&stage==0){
+        QImage pic(":/pic/Wallnut_Curing.png");
         pic = pic.scaled(70, 70);
         painter->drawImage(0, 0, pic);
     }
@@ -89,6 +103,11 @@ void Plant::advance(int step=1){
         return ;
     ++stage;
     stage %= cooldown;
+    change++;
+    if(change == 20){
+        can_change = true;
+        change = 0;
+    }
     if (name=="SunFlower"&&in_shadow)
         stage=1;
     if (name=="ShadowPeaShooter"&&!in_shadow)
@@ -186,12 +205,24 @@ void Plant::movement(){
     if(name == "SunFlower"){
         emit sun_produce(25*level);
     }
+    if(name == "Wallnut"){
+        if (HP<HPInfo[name])
+        {
+            HP+=HPInfo[name]/5;
+            if (HP>HPInfo[name])
+                HP=HPInfo[name];
+        }
+    }
     return ;
 }
 
 void Plant::shadow_judge(int row,int column){
-    if(in_shadow)
+    if(in_shadow && !can_change)
         return;
     in_shadow = (this->row == row) && (this->column == column);
+    if(in_shadow){
+        can_change = false;
+        change = 0;
+    }
     update();
 }
