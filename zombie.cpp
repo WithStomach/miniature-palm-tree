@@ -21,7 +21,7 @@ int Zombie::zombieNum = 0;
 int Zombie::rowNum[5] = {0, 0, 0, 0, 0};
 //僵尸生命值
 QMap<QString, int> Zombie::HPInfo = {
-    std::map<QString, int>::value_type("normal", 300),
+    std::map<QString, int>::value_type("normal", 200),
     std::map<QString, int>::value_type("block", 200),
     std::map<QString, int>::value_type("paper", 300),
     std::map<QString, int>::value_type("football", 450)

@@ -23,4 +23,22 @@ signals:
 public slots:
 };
 
+class ShadowPlayer : public QObject, public QGraphicsItem
+{
+    Q_OBJECT
+public:
+    explicit ShadowPlayer();
+    ~ShadowPlayer();
+    QRectF boundingRect() const Q_DECL_OVERRIDE;
+    void paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
+               QWidget *widget) Q_DECL_OVERRIDE;
+    void advance(int step) Q_DECL_OVERRIDE;
+
+    int shadow_timer;//阴影刷新倒计时计时器
+
+signals:
+
+public slots:
+};
+
 #endif // SUNPLAYER_H
