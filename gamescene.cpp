@@ -119,6 +119,9 @@ MainGame::MainGame()
     this->setSceneRect(-0.5 * mainWidth, -0.5 * mainHeight,
                            mainWidth, mainHeight);
     waiting = 0;
+    sp = new SunPlayer();
+    addItem(sp);
+    sp->setPos(-440, 200);
 
     //初始化卡牌列表，必有一张向日葵
     card[0] = new Card("PeaShooter");
@@ -126,14 +129,17 @@ MainGame::MainGame()
     this->addItem(card[0]);
     card[0]->number = 1;
     card[0]->setPos(-490, -180);
+    cd[0] = 1;
     connect(card[0], &Card::card_clicked, this, &MainGame::card_clicked);
     for(int i = 1; i < 3; i++){
         card[i] = new Card("PeaShooter");
         card[i]->number = i + 1;
         this->addItem(card[i]);
         card[i]->setPos(-490, -180 + 120 * i);
+        cd[i] = 1;
         connect(card[i], &Card::card_clicked, this, &MainGame::card_clicked);
     }
+
 
     //初始化植物
     for (int i=0;i<5;++i)
@@ -199,5 +205,18 @@ void MainGame::mousePressEvent(QGraphicsSceneMouseEvent *event)
             QGraphicsScene::mousePressEvent(event);
         }
     }
+}
+
+bool MainGame::get_sun(int x)
+{
+    int s = sp->sun + x;
+    if(s >= 10000)
+        s = 9999;
+    if(s < 0){
+        sp->sun = 0;
+        return false;
+    }
+    sp->sun = s;
+    return true;
 }
 

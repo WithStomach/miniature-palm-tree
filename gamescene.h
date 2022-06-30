@@ -17,6 +17,7 @@
 #include <QTimer>
 #include "card.h"
 #include "plant.h"
+#include "sunplayer.h"
 
 
 static QString const mapPath = ":/pic/background.png";
@@ -32,7 +33,9 @@ public:
     Card* card[3];//商店中3张卡牌
     Plant* plants[5][9];
     int waiting; // 是否正在等待二次点击种植植物,0表示不是，非0则表示卡片编号
+    SunPlayer* sp; // 阳光显示模块
     void mousePressEvent(QGraphicsSceneMouseEvent*);
+    bool get_sun(int);
 public slots:
     void card_clicked(int n);
     void missile_construct(QString missilename,int row,int column,int level);
