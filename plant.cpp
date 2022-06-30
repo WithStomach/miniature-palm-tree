@@ -141,11 +141,22 @@ bool Plant::AddPlant(Card *card){
         else{
             if (level==5)
                 return false;
-            ++XP;
-            if (XP>=(Plant::level_limit[level]))
+            if (name=="Wallnut")
             {
-                ++level;
-                HP=HPInfo[name];
+                if (HP<HPInfo[name])
+                    HP=HPInfo[name];
+                else
+                    HP=HPInfo[name]*1.5;
+                stage=1;
+            }
+            else
+            {
+                ++XP;
+                if (XP>=(Plant::level_limit[level]))
+                {
+                    ++level;
+                    HP=HPInfo[name];
+                }
             }
             update();
             return true;
