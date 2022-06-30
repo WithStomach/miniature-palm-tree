@@ -25,13 +25,11 @@ GameScene::GameScene(QWidget *parent) : QWidget(parent)
     for(int i = 0; i < 5; i++)
        Zombie::rowNum[i] = 0;
     Zombie::zombieNum = 0;
-
     this->setFixedSize(mainWidth, mainHeight);
 
     mainGame = new MainGame;
     update_t = new QTimer();
     connect(update_t, SIGNAL(timeout()), mainGame, SLOT(advance()));
-
     //设置背景（地图）
     QGraphicsPixmapItem* bkg = new QGraphicsPixmapItem;
     QPixmap img(mapPath);
