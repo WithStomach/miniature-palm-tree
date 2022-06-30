@@ -101,6 +101,18 @@ void GameScene::lose()
     l->show();
 }
 
+void GameScene::victory()
+{
+    update_t->stop();
+    QDialog* l = new QDialog(this);
+    l->setWindowFlags(Qt::FramelessWindowHint | Qt::Dialog);
+    l->setStyleSheet("background-image:url(:/pic/victory.png);");
+    l->setFixedSize(254, 127);
+    l->setModal(true);
+    l->move(600, 400);
+    l->show();
+}
+
 MainGame::MainGame()
 {
     this->setItemIndexMethod(QGraphicsScene::NoIndex);

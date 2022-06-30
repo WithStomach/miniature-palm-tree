@@ -46,10 +46,10 @@ public:
     void game_start();
 public slots:
     void zombie_construct(int last_row);
-
     void pause();
     void back_main_menu();
     void lose();
+    void victory();
 public:
     static QString zombieName[4];
     QTimer* update_t;

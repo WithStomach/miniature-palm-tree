@@ -20,6 +20,7 @@
         <file>pic/ShadowPea.png</file>
         <file>pic/ShadowPeaShooter.png</file>
         <file>pic/PeaShooterCard.png</file>
+        <file>pic/victory.png</file>
     </qresource>
     <qresource prefix="/Zombie">
         <file>zombiePic/normalZombie_move(1).png</file>
